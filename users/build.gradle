@@ -41,6 +41,7 @@ dependencies {
     implementation androidx.appCompat
     implementation androidx.constraint
     implementation adapterDelegates
+    implementation glide
 
     implementation daggerAndroid
     kapt daggerCompiler

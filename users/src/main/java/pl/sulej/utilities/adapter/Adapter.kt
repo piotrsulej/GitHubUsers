@@ -1,4 +1,4 @@
-package pl.sulej.utilities
+package pl.sulej.utilities.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter

@@ -9,8 +9,8 @@ import pl.sulej.users.UsersContract
 import pl.sulej.users.model.UsersModel
 import pl.sulej.users.model.data.UserDTO
 import pl.sulej.users.view.data.User
-import pl.sulej.utilities.Converter
-import pl.sulej.utilities.TEST_SUBSCRIPTIONS_MANAGER
+import pl.sulej.utilities.design.Converter
+import pl.sulej.utilities.asynchronicity.TEST_SUBSCRIPTIONS_MANAGER
 
 class UsersPresenterTest {
 

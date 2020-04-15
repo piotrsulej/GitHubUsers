@@ -1,4 +1,4 @@
-package pl.sulej.utilities
+package pl.sulej.utilities.asynchronicity
 
 import io.reactivex.Scheduler
 

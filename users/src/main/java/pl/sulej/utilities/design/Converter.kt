@@ -1,4 +1,4 @@
-package pl.sulej.utilities
+package pl.sulej.utilities.design
 
 interface Converter<Input, Output> {
 

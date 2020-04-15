@@ -2,7 +2,7 @@ package pl.sulej.users.presentation.data
 
 import pl.sulej.users.model.data.UserDTO
 import pl.sulej.users.view.data.User
-import pl.sulej.utilities.Converter
+import pl.sulej.utilities.design.Converter
 import javax.inject.Inject
 import javax.inject.Singleton
 
