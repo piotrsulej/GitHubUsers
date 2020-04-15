@@ -10,10 +10,11 @@ import javax.inject.Inject
 
 class UsersPresenter @Inject constructor(
     private val model: UsersModel,
-    private val converter: Converter<List<UserDetails>, List<User>>,
+    private val converter: Converter<UserList, List<User>>,
     private val subscriptionsManager: SubscriptionsManager
 ) : UsersContract.Presenter {
 
+    private var expandedUserNames: List<String> = emptyList()
     private var view: UsersContract.View? = null
 
     override fun viewCreated(view: UsersContract.View) {
@@ -28,7 +29,8 @@ class UsersPresenter @Inject constructor(
         )
     }
 
-    override fun userClicked(userName: String) {
+    override fun userDetailsClicked(userName: String) {
+        expandedUserNames = expandedUserNames + userName
         subscriptionsManager.subscribe(
             tag = this.toString(),
             source = model.getUsersWithRepositoriesOfUser(userName),
@@ -41,7 +43,8 @@ class UsersPresenter @Inject constructor(
     }
 
     private fun handleUsersList(users: List<UserDetails>) {
-        val convertedUsers = converter.convert(users)
+        val userList = UserList(users, expandedUserNames)
+        val convertedUsers = converter.convert(userList)
         view?.showUsers(convertedUsers)
     }
 }

@@ -16,7 +16,7 @@ import pl.sulej.utilities.design.Converter
 class UsersPresenterTest {
 
     private val model: UsersModel = mock()
-    private val converter: Converter<List<UserDetails>, List<User>> = mock()
+    private val converter: Converter<UserList, List<User>> = mock()
     private val view: UsersContract.View = mock()
     private val testSubject = UsersPresenter(
         model = model,
@@ -29,8 +29,8 @@ class UsersPresenterTest {
     @Test
     fun `Show users`() {
         given(model.getUsers())
-            .willReturn(Single.just(DUMMY_USERS_FROM_MODEL))
-        given(converter.convert(DUMMY_USERS_FROM_MODEL))
+            .willReturn(Single.just(DUMMY_MODEL_USERS))
+        given(converter.convert(dummyUsersList(expandedUsers = emptyList())))
             .willReturn(DUMMY_USERS)
 
         testSubject.viewAvailable()
@@ -43,16 +43,16 @@ class UsersPresenterTest {
     fun `Show users with updated repositories`() {
         given(model.getUsers())
             .willReturn(Single.just(emptyList()))
-        given(converter.convert(emptyList()))
+        given(converter.convert(UserList(users = emptyList(), expandedUserNames = emptyList())))
             .willReturn(emptyList())
         testSubject.viewAvailable()
 
         given(model.getUsersWithRepositoriesOfUser(DUMMY_LOGIN))
-            .willReturn(Single.just(DUMMY_USERS_FROM_MODEL))
-        given(converter.convert(DUMMY_USERS_FROM_MODEL))
+            .willReturn(Single.just(DUMMY_MODEL_USERS))
+        given(converter.convert(dummyUsersList(expandedUsers = listOf(DUMMY_LOGIN))))
             .willReturn(DUMMY_USERS)
 
-        testSubject.userClicked(DUMMY_LOGIN)
+        testSubject.userDetailsClicked(DUMMY_LOGIN)
 
         then(view).should()
             .showUsers(DUMMY_USERS)
@@ -60,7 +60,7 @@ class UsersPresenterTest {
 
     companion object {
         private const val DUMMY_LOGIN = "Gorn"
-        private val DUMMY_USERS_FROM_MODEL = listOf(
+        private val DUMMY_MODEL_USERS = listOf(
             UserDetails(
                 userDTO = UserDTO(
                     login = "Gorn",
@@ -73,8 +73,12 @@ class UsersPresenterTest {
             User(
                 name = "Gorn",
                 avatarUrl = "https://custom-gwent.com/cardsBg/8b404ca7f758f2af1eb16e4569c2ca68.jpeg",
-                repositoryNames = "Zemsta Gorna, Zbroja najemnika Nowy Obóz"
+                repositoryNames = "Zemsta Gorna, Zbroja najemnika Nowy Obóz",
+                detailsExpanded = false
             )
         )
+
+        private fun dummyUsersList(expandedUsers: List<String> = emptyList()): UserList =
+            UserList(DUMMY_MODEL_USERS, expandedUsers)
     }
 }

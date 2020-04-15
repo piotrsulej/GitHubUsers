@@ -17,6 +17,6 @@ interface UsersContract {
 
         fun viewUnavailable()
 
-        fun userClicked(userName: String)
+        fun userDetailsClicked(userName: String)
     }
 }

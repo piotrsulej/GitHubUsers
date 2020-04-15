@@ -28,7 +28,7 @@ class UsersActivity : AppCompatActivity(), UsersContract.View {
         setContentView(R.layout.activity_main)
         users_list.layoutManager = LinearLayoutManager(this)
         adapter = adapterFactory.create(
-            userClicked = presenter::userClicked
+            userDetailsClicked = presenter::userDetailsClicked
         )
         users_list.adapter = adapter
     }
