@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -35,7 +36,13 @@ android {
 dependencies {
     implementation project(":users")
 
+    implementation daggerAndroid
+    kapt daggerAndroidProcessor
+    kapt daggerCompiler
+
     implementation kotlinStandardLibrary
     implementation androidx.ktx
     implementation androidx.appCompat
+    implementation adapterDelegates
+    implementation rxjava
 }

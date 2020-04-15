@@ -1,8 +1,11 @@
 package pl.sulej.users.view.adapter
 
-import pl.sulej.utils.Adapter
+import pl.sulej.utilities.Adapter
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class UsersAdapter(userDelegateFactory: UserDelegateFactory) : Adapter() {
+@Singleton
+class UsersAdapter @Inject constructor(userDelegateFactory: UserDelegateFactory) : Adapter() {
 
     init {
         delegatesManager.addDelegate(userDelegateFactory.create())

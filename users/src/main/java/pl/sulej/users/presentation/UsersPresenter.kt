@@ -4,10 +4,11 @@ import pl.sulej.users.UsersContract
 import pl.sulej.users.model.UsersModel
 import pl.sulej.users.model.data.UserDTO
 import pl.sulej.users.view.data.User
-import pl.sulej.utils.Converter
-import pl.sulej.utils.SubscriptionsManager
+import pl.sulej.utilities.Converter
+import pl.sulej.utilities.SubscriptionsManager
+import javax.inject.Inject
 
-class UsersPresenter(
+class UsersPresenter @Inject constructor(
     private val model: UsersModel,
     private val converter: Converter<List<UserDTO>, List<User>>,
     private val subscriptionsManager: SubscriptionsManager
@@ -20,10 +21,11 @@ class UsersPresenter(
     }
 
     override fun viewAvailable() {
-        val subscription = model.getUsers()
-            .doOnSuccess(::handleUsersList)
-
-        subscriptionsManager.subscribe(tag = this.toString(), source = subscription)
+        subscriptionsManager.subscribe(
+            tag = this.toString(),
+            source = model.getUsers(),
+            onSuccess = ::handleUsersList
+        )
     }
 
     override fun viewUnavailable() {

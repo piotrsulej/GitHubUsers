@@ -1,4 +1,4 @@
-package pl.sulej.utils
+package pl.sulej.utilities
 
 import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers

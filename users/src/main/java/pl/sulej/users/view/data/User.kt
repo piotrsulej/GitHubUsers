@@ -1,6 +1,6 @@
 package pl.sulej.users.view.data
 
-import pl.sulej.utils.AdapterItem
+import pl.sulej.utilities.AdapterItem
 
 data class User(
     val name: String,

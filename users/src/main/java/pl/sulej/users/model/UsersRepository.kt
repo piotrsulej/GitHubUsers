@@ -6,8 +6,11 @@ import pl.sulej.users.model.network.GitHubUsersAPI
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class UsersRepository : UsersModel {
+@Singleton
+class UsersRepository @Inject constructor() : UsersModel {
 
     override fun getUsers(): Single<List<UserDTO>> {
         return Retrofit.Builder()

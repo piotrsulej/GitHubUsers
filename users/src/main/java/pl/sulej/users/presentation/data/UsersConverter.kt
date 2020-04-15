@@ -1,15 +1,21 @@
 package pl.sulej.users.presentation.data
 
-import pl.sulej.utils.Converter
 import pl.sulej.users.model.data.UserDTO
 import pl.sulej.users.view.data.User
+import pl.sulej.utilities.Converter
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class UsersConverter : Converter<UserDTO, User> {
+@Singleton
+class UsersConverter @Inject constructor() :
+    Converter<List<@JvmSuppressWildcards UserDTO>, List<@JvmSuppressWildcards User>> {
 
-    override fun convert(input: UserDTO): User =
-        User(
-            name = input.login,
-            avatarUrl = input.avatar_url,
-            repositoryNames = emptyList()
-        )
+    override fun convert(input: List<UserDTO>): List<User> =
+        input.map { userDTO ->
+            User(
+                name = userDTO.login,
+                avatarUrl = userDTO.avatar_url,
+                repositoryNames = emptyList()
+            )
+        }
 }

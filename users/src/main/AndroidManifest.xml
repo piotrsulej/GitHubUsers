@@ -1,4 +1,1 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="pl.sulej.users">
-
-</manifest>
+<manifest package="pl.sulej.users" />

@@ -1,4 +1,4 @@
-package pl.sulej.utils
+package pl.sulej.utilities
 
 interface AdapterItem {
 
