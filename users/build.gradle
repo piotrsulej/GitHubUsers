@@ -40,6 +40,7 @@ dependencies {
     implementation androidx.ktx
     implementation androidx.appCompat
     implementation androidx.constraint
+    implementation adapterDelegates
 
     testImplementation testEssentials
 }
