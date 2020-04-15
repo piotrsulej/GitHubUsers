@@ -3,6 +3,7 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
       <module name="GitHub_Users.app" target="1.8" />
+      <module name="GitHub_Users.users" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
