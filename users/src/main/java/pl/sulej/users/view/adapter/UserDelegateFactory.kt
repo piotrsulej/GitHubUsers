@@ -1,5 +1,6 @@
 package pl.sulej.users.view.adapter
 
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
@@ -11,14 +12,22 @@ import javax.inject.Inject
 
 class UserDelegateFactory @Inject constructor(private val imageLoader: ImageLoader) {
 
-    fun create() = adapterDelegate<User, AdapterItem>(R.layout.delegate_user) {
+    fun create(userClicked: (String) -> Unit) =
+        adapterDelegate<User, AdapterItem>(R.layout.delegate_user) {
 
-        val name = findViewById<TextView>(R.id.user_name)
-        val avatar = findViewById<ImageView>(R.id.user_avatar)
+            val name = findViewById<TextView>(R.id.user_name)
+            val avatar = findViewById<ImageView>(R.id.user_avatar)
+            val repositories = findViewById<TextView>(R.id.user_repositories)
+            val user = findViewById<View>(R.id.user)
 
-        bind {
-            imageLoader.load(imageUrl = item.avatarUrl, targetView = avatar)
-            name.text = item.name
+            user.setOnClickListener {
+                userClicked(item.name)
+            }
+
+            bind {
+                imageLoader.load(imageUrl = item.avatarUrl, targetView = avatar)
+                name.text = item.name
+                repositories.text = item.repositoryNames
+            }
         }
-    }
 }

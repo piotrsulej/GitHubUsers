@@ -6,7 +6,7 @@ import dagger.Module
 import pl.sulej.users.UsersContract
 import pl.sulej.users.model.UsersModel
 import pl.sulej.users.model.UsersRepository
-import pl.sulej.users.model.data.UserDTO
+import pl.sulej.users.model.data.UserDetails
 import pl.sulej.users.presentation.UsersPresenter
 import pl.sulej.users.presentation.data.UsersConverter
 import pl.sulej.users.view.UsersActivity
@@ -21,7 +21,7 @@ abstract class UsersModule {
     abstract fun bindActivity(activity: UsersActivity): Activity
 
     @Binds
-    abstract fun bindUsersConverter(converter: UsersConverter): Converter<List<UserDTO>, List<User>>
+    abstract fun bindUsersConverter(converter: UsersConverter): Converter<List<UserDetails>, List<User>>
 
     @Binds
     abstract fun bindUsersPresenter(presenter: UsersPresenter): UsersContract.Presenter
