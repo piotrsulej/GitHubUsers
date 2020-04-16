@@ -31,6 +31,7 @@
 * https://github.com/sockeqwe/AdapterDelegates
 
 ## Ideas for future improvements
+* User interface could get totally new look, as this one was built in order to have quick preview of application behavior.
 * Users screen is inside separate module - this gives the possibility to reuse it in more applications, e.g. with different implementation of model layer. One of the applications could use implementation that would save downloaded data to database (Room Persistence Library could be used for this), and other one could still use the same behavior as now.
 * Mock version for automated user interface tests could be created and it should use prepared mocked data in order to be able to test user interface without dependency on real GitHub API.
 * `pl.sulej.utilities` package could be placed inside separate module and shared between different features.
