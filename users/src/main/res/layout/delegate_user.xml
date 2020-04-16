@@ -10,20 +10,23 @@
     <ImageView
         android:id="@+id/user_avatar"
         tools:src="@android:color/darker_gray"
+        android:contentDescription="@string/content_description_avatar"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="10dp"
-        android:layout_width="24dp"
-        android:layout_height="24dp" />
+        android:layout_width="@dimen/user_tile_size"
+        android:layout_height="@dimen/user_tile_size" />
 
     <ImageView
+        android:background="?attr/selectableItemBackground"
         android:id="@+id/user_show_details"
+        android:contentDescription="@string/content_description_detail_more"
         android:src="@android:drawable/ic_menu_more"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="10dp"
-        android:layout_width="24dp"
-        android:layout_height="24dp" />
+        android:layout_width="@dimen/user_tile_size"
+        android:layout_height="@dimen/user_tile_size" />
 
     <TextView
         android:id="@+id/user_name"
@@ -34,9 +37,12 @@
         android:layout_marginEnd="10dp"
         android:gravity="center_vertical"
         android:textStyle="bold"
-        tools:text="piotrsulej"
+        tools:text="mojombomojombomojombomojombomojombomojombomojombomojombo"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textSize="16sp"
         android:layout_width="0dp"
-        android:layout_height="24dp" />
+        android:layout_height="48dp" />
 
     <TextView
         android:id="@+id/user_repositories"
@@ -45,9 +51,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+        android:textSize="12sp"
         android:gravity="center_vertical"
-        tools:text="hilmar,hilmar-meshes"
+        tools:text="hilmar\nhilmar-meshes"
         android:visibility="gone"
+        tools:visibility="visible"
         android:layout_width="0dp"
         android:layout_height="wrap_content" />
 

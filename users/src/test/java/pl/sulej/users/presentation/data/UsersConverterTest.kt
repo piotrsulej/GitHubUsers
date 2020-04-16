@@ -63,7 +63,7 @@ class UsersConverterTest {
         private val OTHER_USER = User(
             name = "user2",
             avatarUrl = "url2",
-            repositoryNames = "repo2x1, repo2x2",
+            repositoryNames = "repo2x1\nrepo2x2",
             detailsExpanded = false
         )
 
@@ -71,7 +71,7 @@ class UsersConverterTest {
             return User(
                 name = "user1",
                 avatarUrl = "url1",
-                repositoryNames = "repo1x1, repo1x2",
+                repositoryNames = "repo1x1\nrepo1x2",
                 detailsExpanded = expanded
             )
         }

@@ -29,25 +29,31 @@ class UserDelegateFactory @Inject constructor(
             showDetails.setOnClickListener {
                 val newExpandedState = item.detailsExpanded.not()
                 userDetailsClicked(UserDetailClick(item.name, newExpandedState))
-                updateDetailsView(newExpandedState, repositories, showDetails)
+                updateDetailsView(newExpandedState, repositories, showDetails, item.name)
             }
 
             bind {
                 imageLoader.load(imageUrl = item.avatarUrl, targetView = avatar)
                 name.text = item.name
                 repositories.text = item.repositoryNames
-                updateDetailsView(item.detailsExpanded, repositories, showDetails)
+                updateDetailsView(item.detailsExpanded, repositories, showDetails, item.name)
             }
         }
 
     private fun updateDetailsView(
         detailsExpanded: Boolean,
         repositories: TextView,
-        showDetails: ImageView
+        showDetails: ImageView,
+        name: String
     ) {
         repositories.visibility = if (detailsExpanded) View.VISIBLE else View.GONE
         val resource = if (detailsExpanded) CLOSE_DRAWABLE_RESOURCE else MORE_DRAWABLE_RESOURCE
         val drawable = ContextCompat.getDrawable(context, resource)
+        val descriptionResource =
+            if (detailsExpanded) R.string.content_description_detail_close
+            else R.string.content_description_detail_more
+        val description = context.getString(descriptionResource, name)
+        showDetails.contentDescription = description
         showDetails.setImageDrawable(drawable)
     }
 

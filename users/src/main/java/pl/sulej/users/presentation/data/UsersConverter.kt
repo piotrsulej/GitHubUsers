@@ -15,7 +15,10 @@ class UsersConverter @Inject constructor() : Converter<UserList, List<@JvmSuppre
             User(
                 name = user.userDTO.login,
                 avatarUrl = user.userDTO.avatarUrl,
-                repositoryNames = user.repositories.joinToString(transform = RepositoryDTO::name),
+                repositoryNames = user.repositories.joinToString(
+                    transform = RepositoryDTO::name,
+                    separator = "\n"
+                ),
                 detailsExpanded = input.expandedUserNames.any { it == user.userDTO.login }
             )
         }.filter { user ->
