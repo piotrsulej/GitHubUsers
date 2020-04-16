@@ -9,6 +9,7 @@ import pl.sulej.users.UsersContract
 import pl.sulej.users.model.UsersModel
 import pl.sulej.users.model.data.UserDTO
 import pl.sulej.users.model.data.UserDetails
+import pl.sulej.users.view.UserDetailClick
 import pl.sulej.users.view.data.User
 import pl.sulej.utilities.asynchronicity.TEST_SUBSCRIPTIONS_MANAGER
 import pl.sulej.utilities.design.Converter
@@ -28,34 +29,48 @@ class UsersPresenterTest {
 
     @Test
     fun `Show users`() {
-        given(model.getUsers())
-            .willReturn(Single.just(DUMMY_MODEL_USERS))
-        given(converter.convert(dummyUsersList(expandedUsers = emptyList())))
-            .willReturn(DUMMY_USERS)
+        given(model.getUsers()).willReturn(Single.just(DUMMY_MODEL_USERS))
+        val list = UserList(DUMMY_MODEL_USERS)
+        given(converter.convert(list)).willReturn(DUMMY_USERS)
 
         testSubject.viewAvailable()
 
-        then(view).should()
-            .showUsers(DUMMY_USERS)
+        then(view).should().showUsers(DUMMY_USERS)
     }
 
     @Test
-    fun `Show users with updated repositories`() {
-        given(model.getUsers())
-            .willReturn(Single.just(emptyList()))
-        given(converter.convert(UserList(users = emptyList(), expandedUserNames = emptyList())))
-            .willReturn(emptyList())
-        testSubject.viewAvailable()
+    fun `Show filtered users`() {
+        given(model.getUsers()).willReturn(Single.just(DUMMY_MODEL_USERS))
+        val filteredList = UserList(DUMMY_MODEL_USERS, searchQuery = DUMMY_LOGIN)
+        given(converter.convert(filteredList)).willReturn(DUMMY_USERS)
 
+        testSubject.searchQueryUpdated(DUMMY_LOGIN)
+
+        then(view).should().showUsers(DUMMY_USERS)
+    }
+
+    @Test
+    fun `Show expanded user`() {
         given(model.getUsersWithRepositoriesOfUser(DUMMY_LOGIN))
             .willReturn(Single.just(DUMMY_MODEL_USERS))
-        given(converter.convert(dummyUsersList(expandedUsers = listOf(DUMMY_LOGIN))))
-            .willReturn(DUMMY_USERS)
+        val list = UserList(DUMMY_MODEL_USERS, listOf(DUMMY_LOGIN))
+        given(converter.convert(list)).willReturn(DUMMY_USERS)
 
-        testSubject.userDetailsClicked(DUMMY_LOGIN)
+        testSubject.userDetailsClicked(UserDetailClick(userName = DUMMY_LOGIN, expanded = true))
 
-        then(view).should()
-            .showUsers(DUMMY_USERS)
+        then(view).should().showUsers(DUMMY_USERS)
+    }
+
+    @Test
+    fun `Show collapsed user`() {
+        given(model.getUsersWithRepositoriesOfUser(DUMMY_LOGIN))
+            .willReturn(Single.just(DUMMY_MODEL_USERS))
+        val list = UserList(DUMMY_MODEL_USERS)
+        given(converter.convert(list)).willReturn(DUMMY_USERS)
+
+        testSubject.userDetailsClicked(UserDetailClick(userName = DUMMY_LOGIN, expanded = false))
+
+        then(view).should().showUsers(DUMMY_USERS)
     }
 
     companion object {
@@ -77,8 +92,5 @@ class UsersPresenterTest {
                 detailsExpanded = false
             )
         )
-
-        private fun dummyUsersList(expandedUsers: List<String> = emptyList()): UserList =
-            UserList(DUMMY_MODEL_USERS, expandedUsers)
     }
 }

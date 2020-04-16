@@ -15,8 +15,7 @@ import javax.inject.Singleton
         AndroidInjectionModule::class,
         ActivitiesModule::class,
         AsynchronicityModule::class,
-        NetworkModule::class,
-        AndroidModule::class
+        NetworkModule::class
     ]
 )
 interface ApplicationComponent {

@@ -1,6 +1,7 @@
 package pl.sulej.users.dependency
 
 import android.app.Activity
+import android.content.Context
 import dagger.Binds
 import dagger.Module
 import pl.sulej.users.UsersContract
@@ -19,6 +20,9 @@ abstract class UsersModule {
 
     @Binds
     abstract fun bindActivity(activity: UsersActivity): Activity
+
+    @Binds
+    abstract fun bindContext(activity: UsersActivity): Context
 
     @Binds
     abstract fun bindUsersConverter(converter: UsersConverter): Converter<UserList, List<User>>

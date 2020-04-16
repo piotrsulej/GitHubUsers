@@ -1,37 +1,58 @@
 package pl.sulej.users.view.adapter
 
+import android.content.Context
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 import pl.sulej.users.R
+import pl.sulej.users.view.UserDetailClick
 import pl.sulej.users.view.data.User
 import pl.sulej.utilities.adapter.AdapterItem
 import pl.sulej.utilities.images.ImageLoader
 import javax.inject.Inject
 
-class UserDelegateFactory @Inject constructor(private val imageLoader: ImageLoader) {
+class UserDelegateFactory @Inject constructor(
+    private val imageLoader: ImageLoader,
+    private val context: Context
+) {
 
-    fun create(userDetailsClicked: (String) -> Unit) =
+    fun create(userDetailsClicked: (UserDetailClick) -> Unit) =
         adapterDelegate<User, AdapterItem>(R.layout.delegate_user) {
 
             val name = findViewById<TextView>(R.id.user_name)
             val avatar = findViewById<ImageView>(R.id.user_avatar)
             val repositories = findViewById<TextView>(R.id.user_repositories)
-            val showDetails = findViewById<View>(R.id.user_show_details)
+            val showDetails = findViewById<ImageView>(R.id.user_show_details)
 
             showDetails.setOnClickListener {
-                userDetailsClicked(item.name)
-                showDetails.visibility = View.GONE
-                repositories.visibility = View.VISIBLE
+                val newExpandedState = item.detailsExpanded.not()
+                userDetailsClicked(UserDetailClick(item.name, newExpandedState))
+                updateDetailsView(newExpandedState, repositories, showDetails)
             }
 
             bind {
                 imageLoader.load(imageUrl = item.avatarUrl, targetView = avatar)
                 name.text = item.name
                 repositories.text = item.repositoryNames
-                repositories.visibility = if (item.detailsExpanded) View.VISIBLE else View.GONE
-                showDetails.visibility = if (item.detailsExpanded) View.GONE else View.VISIBLE
+                updateDetailsView(item.detailsExpanded, repositories, showDetails)
             }
         }
+
+    private fun updateDetailsView(
+        detailsExpanded: Boolean,
+        repositories: TextView,
+        showDetails: ImageView
+    ) {
+        repositories.visibility = if (detailsExpanded) View.VISIBLE else View.GONE
+        val resource = if (detailsExpanded) CLOSE_DRAWABLE_RESOURCE else MORE_DRAWABLE_RESOURCE
+        val drawable = ContextCompat.getDrawable(context, resource)
+        showDetails.setImageDrawable(drawable)
+    }
+
+    companion object {
+        private const val CLOSE_DRAWABLE_RESOURCE = android.R.drawable.ic_menu_close_clear_cancel
+        private const val MORE_DRAWABLE_RESOURCE = android.R.drawable.ic_menu_more
+    }
 }

@@ -61,7 +61,7 @@ class UsersRepositoryTest {
         testSubject.getUsers().test()
         val result = testSubject.getUsersWithRepositoriesOfUser(DUMMY_USER.login).test()
 
-        result.assertValue(oneUserWithRepositories(DUMMY_REPOSITORIES.take(3)))
+        result.assertValue(oneUserWithRepositories(EXPECTED_REPOSITORIES))
     }
 
     @Test
@@ -80,12 +80,12 @@ class UsersRepositoryTest {
                 avatarUrl = "https://gamepedia.cursecdn.com/gothic_pl_gamepedia/f/fa/Diego_%28G2%2C_cie%C5%84%29.png"
             )
         private val DUMMY_USERS_FROM_NETWORK = listOf(DUMMY_USER)
-        private val DUMMY_REPOSITORIES = listOf(
+        private val EXPECTED_REPOSITORIES = listOf(
             RepositoryDTO("Stary Obóz"),
             RepositoryDTO("Miecz bojowy"),
-            RepositoryDTO("Łuk Diego"),
-            RepositoryDTO("Zbroja Cienia")
+            RepositoryDTO("Łuk Diego")
         )
+        private val DUMMY_REPOSITORIES = EXPECTED_REPOSITORIES.plus(RepositoryDTO("Zbroja Cienia"))
 
         fun oneUserWithRepositories(repositories: List<RepositoryDTO>): List<UserDetails> = listOf(
             UserDetails(

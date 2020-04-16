@@ -17,7 +17,7 @@ class UsersRepository @Inject constructor(
 
     override fun getUsersWithRepositoriesOfUser(userLogin: String): Single<List<UserDetails>> {
         val cachedUser = cachedUsers?.find { it.userDTO.login == userLogin }
-        return if (cachedUser != null) {
+        return if (cachedUser != null && cachedUser.repositories.isEmpty()) {
             getUsersRepositories(cachedUser.userDTO).map {
                 cachedUsers
             }

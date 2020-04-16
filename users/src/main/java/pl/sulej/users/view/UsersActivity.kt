@@ -2,6 +2,7 @@ package pl.sulej.users.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,11 +27,8 @@ class UsersActivity : AppCompatActivity(), UsersContract.View {
         AndroidInjection.inject(this)
         presenter.viewCreated(this)
         setContentView(R.layout.activity_main)
-        users_list.layoutManager = LinearLayoutManager(this)
-        adapter = adapterFactory.create(
-            userDetailsClicked = presenter::userDetailsClicked
-        )
-        users_list.adapter = adapter
+        initializeUsersList()
+        initializeSearchBar()
     }
 
     override fun onResume() {
@@ -45,5 +43,28 @@ class UsersActivity : AppCompatActivity(), UsersContract.View {
 
     override fun showUsers(users: List<User>) {
         adapter.items = users
+    }
+
+    private fun initializeUsersList() {
+        users_list.layoutManager = LinearLayoutManager(this)
+        adapter = adapterFactory.create(
+            userDetailsClicked = presenter::userDetailsClicked
+        )
+        users_list.adapter = adapter
+    }
+
+    private fun initializeSearchBar() {
+        users_search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                presenter.searchQueryUpdated(newText)
+                return true
+            }
+
+            override fun onQueryTextSubmit(query: String): Boolean {
+                presenter.searchQueryUpdated(query)
+                return true
+            }
+        })
     }
 }

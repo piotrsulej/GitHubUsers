@@ -1,5 +1,6 @@
 package pl.sulej.users
 
+import pl.sulej.users.view.UserDetailClick
 import pl.sulej.users.view.data.User
 
 interface UsersContract {
@@ -17,6 +18,8 @@ interface UsersContract {
 
         fun viewUnavailable()
 
-        fun userDetailsClicked(userName: String)
+        fun userDetailsClicked(userDetailClick: UserDetailClick)
+
+        fun searchQueryUpdated(searchQuery: String)
     }
 }

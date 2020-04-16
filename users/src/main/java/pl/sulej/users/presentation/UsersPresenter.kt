@@ -3,6 +3,7 @@ package pl.sulej.users.presentation
 import pl.sulej.users.UsersContract
 import pl.sulej.users.model.UsersModel
 import pl.sulej.users.model.data.UserDetails
+import pl.sulej.users.view.UserDetailClick
 import pl.sulej.users.view.data.User
 import pl.sulej.utilities.asynchronicity.SubscriptionsManager
 import pl.sulej.utilities.design.Converter
@@ -14,6 +15,7 @@ class UsersPresenter @Inject constructor(
     private val subscriptionsManager: SubscriptionsManager
 ) : UsersContract.Presenter {
 
+    private var searchQuery: String = ""
     private var expandedUserNames: List<String> = emptyList()
     private var view: UsersContract.View? = null
 
@@ -22,6 +24,10 @@ class UsersPresenter @Inject constructor(
     }
 
     override fun viewAvailable() {
+        getUsers()
+    }
+
+    private fun getUsers() {
         subscriptionsManager.subscribe(
             tag = this.toString(),
             source = model.getUsers(),
@@ -29,13 +35,22 @@ class UsersPresenter @Inject constructor(
         )
     }
 
-    override fun userDetailsClicked(userName: String) {
-        expandedUserNames = expandedUserNames + userName
+    override fun userDetailsClicked(userDetailClick: UserDetailClick) {
+        expandedUserNames = if (userDetailClick.expanded) {
+            expandedUserNames + userDetailClick.userName
+        } else {
+            expandedUserNames - userDetailClick.userName
+        }
         subscriptionsManager.subscribe(
             tag = this.toString(),
-            source = model.getUsersWithRepositoriesOfUser(userName),
+            source = model.getUsersWithRepositoriesOfUser(userDetailClick.userName),
             onSuccess = ::handleUsersList
         )
+    }
+
+    override fun searchQueryUpdated(searchQuery: String) {
+        this.searchQuery = searchQuery
+        getUsers()
     }
 
     override fun viewUnavailable() {
@@ -43,7 +58,7 @@ class UsersPresenter @Inject constructor(
     }
 
     private fun handleUsersList(users: List<UserDetails>) {
-        val userList = UserList(users, expandedUserNames)
+        val userList = UserList(users, expandedUserNames, searchQuery)
         val convertedUsers = converter.convert(userList)
         view?.showUsers(convertedUsers)
     }
