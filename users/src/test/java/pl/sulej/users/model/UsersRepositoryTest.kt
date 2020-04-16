@@ -32,7 +32,7 @@ class UsersRepositoryTest {
     }
 
     @Test
-    fun `Don't repeat network call`() {
+    fun `Don't repeat users network call`() {
         repeat(3) {
             testSubject.getUsers().test()
         }
@@ -62,6 +62,21 @@ class UsersRepositoryTest {
         val result = testSubject.getUsersWithRepositoriesOfUser(DUMMY_USER.login).test()
 
         result.assertValue(oneUserWithRepositories(EXPECTED_REPOSITORIES))
+    }
+
+    @Test
+    fun `Don't repeat user's repositories network call`() {
+        given(networkApi.getUserRepositories(DUMMY_USER.login))
+            .willReturn(Single.just(DUMMY_REPOSITORIES))
+
+        testSubject.getUsers().test()
+        repeat(3) {
+            testSubject.getUsersWithRepositoriesOfUser(DUMMY_USER.login).test()
+        }
+
+        then(networkApi)
+            .should(ONCE)
+            .getUserRepositories(DUMMY_USER.login)
     }
 
     @Test
