@@ -25,15 +25,16 @@ class UsersPresenter @Inject constructor(
     }
 
     override fun viewAvailable() {
+        view?.showLoadingIndicator()
         getUsers()
     }
 
     override fun errorClicked() {
+        view?.showLoadingIndicator()
         getUsers()
     }
 
     private fun getUsers() {
-        view?.showLoadingIndicator()
         subscriptionsManager.subscribe(
             tag = this.toString(),
             source = model.getUsers(),

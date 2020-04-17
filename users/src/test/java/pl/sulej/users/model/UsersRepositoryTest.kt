@@ -27,10 +27,20 @@ class UsersRepositoryTest {
     }
 
     @Test
-    fun `Return users from network API`() {
+    fun `Return users from network`() {
         val result = testSubject.getUsers().test()
 
         result.assertValue(DUMMY_USER_DETAILS)
+    }
+
+    @Test
+    fun `Return users without details`() {
+        given(networkApi.getUserRepositories(DUMMY_USER.login))
+            .willReturn(Single.error(Throwable()))
+
+        val result = testSubject.getUsers().test()
+
+        result.assertValue(DUMMY_USER_WITHOUT_DETAILS)
     }
 
     @Test
@@ -73,6 +83,9 @@ class UsersRepositoryTest {
                 userDTO = DUMMY_USER,
                 repositories = EXPECTED_REPOSITORIES
             )
+        )
+        private val DUMMY_USER_WITHOUT_DETAILS = listOf(
+            UserDetails(userDTO = DUMMY_USER)
         )
     }
 }
