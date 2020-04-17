@@ -13,49 +13,36 @@
         android:contentDescription="@string/content_description_avatar"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="10dp"
-        android:layout_width="@dimen/user_tile_size"
-        android:layout_height="@dimen/user_tile_size" />
-
-    <ImageView
-        android:background="?attr/selectableItemBackground"
-        android:id="@+id/user_show_details"
-        android:contentDescription="@string/content_description_detail_more"
-        android:src="@android:drawable/ic_menu_more"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="10dp"
+        android:layout_margin="10dp"
         android:layout_width="@dimen/user_tile_size"
         android:layout_height="@dimen/user_tile_size" />
 
     <TextView
         android:id="@+id/user_name"
+        android:textColor="@android:color/black"
         app:layout_constraintStart_toEndOf="@id/user_avatar"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/user_show_details"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="10dp"
         android:gravity="center_vertical"
         android:textStyle="bold"
-        tools:text="mojombomojombomojombomojombomojombomojombomojombomojombo"
+        tools:text="piotrsulej"
         android:maxLines="1"
         android:ellipsize="end"
         android:textSize="16sp"
         android:layout_width="0dp"
-        android:layout_height="48dp" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/user_repositories"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/user_avatar"
         app:layout_constraintTop_toBottomOf="@id/user_name"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_margin="10dp"
         android:textSize="12sp"
-        android:gravity="center_vertical"
-        tools:text="hilmar\nhilmar-meshes"
         android:visibility="gone"
-        tools:visibility="visible"
+        android:gravity="center_vertical"
+        tools:text="hilmar, hilmar-meshes, GitHubUsers"
         android:layout_width="0dp"
         android:layout_height="wrap_content" />
 

@@ -1,22 +1,23 @@
 package pl.sulej.users.presentation
 
+import pl.sulej.users.R
 import pl.sulej.users.UsersContract
 import pl.sulej.users.model.UsersModel
 import pl.sulej.users.model.data.UserDetails
-import pl.sulej.users.view.UserDetailClick
 import pl.sulej.users.view.data.User
 import pl.sulej.utilities.asynchronicity.SubscriptionsManager
 import pl.sulej.utilities.design.Converter
+import pl.sulej.utilities.resources.StringProvider
 import javax.inject.Inject
 
 class UsersPresenter @Inject constructor(
     private val model: UsersModel,
     private val converter: Converter<UserList, List<User>>,
-    private val subscriptionsManager: SubscriptionsManager
+    private val subscriptionsManager: SubscriptionsManager,
+    private val stringProvider: StringProvider
 ) : UsersContract.Presenter {
 
     private var searchQuery: String = ""
-    private var expandedUserNames: List<String> = emptyList()
     private var view: UsersContract.View? = null
 
     override fun viewCreated(view: UsersContract.View) {
@@ -27,24 +28,20 @@ class UsersPresenter @Inject constructor(
         getUsers()
     }
 
+    override fun errorClicked() {
+        getUsers()
+    }
+
     private fun getUsers() {
+        view?.showLoadingIndicator()
         subscriptionsManager.subscribe(
             tag = this.toString(),
             source = model.getUsers(),
-            onSuccess = ::handleUsersList
-        )
-    }
-
-    override fun userDetailsClicked(userDetailClick: UserDetailClick) {
-        expandedUserNames = if (userDetailClick.expanded) {
-            expandedUserNames + userDetailClick.userName
-        } else {
-            expandedUserNames - userDetailClick.userName
-        }
-        subscriptionsManager.subscribe(
-            tag = this.toString(),
-            source = model.getUsersWithRepositoriesOfUser(userDetailClick.userName),
-            onSuccess = ::handleUsersList
+            onNext = this::handleUsersList,
+            onError = { error ->
+                val message = error.message ?: stringProvider.getString(R.string.unknown_error)
+                view?.showError(message)
+            }
         )
     }
 
@@ -58,7 +55,7 @@ class UsersPresenter @Inject constructor(
     }
 
     private fun handleUsersList(users: List<UserDetails>) {
-        val userList = UserList(users, expandedUserNames, searchQuery)
+        val userList = UserList(users, searchQuery)
         val convertedUsers = converter.convert(userList)
         view?.showUsers(convertedUsers)
     }

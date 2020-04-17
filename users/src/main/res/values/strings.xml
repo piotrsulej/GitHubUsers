@@ -1,5 +1,7 @@
 <resources>
     <string name="content_description_avatar">%s\'s avatar</string>
-    <string name="content_description_detail_more">Show details about %s</string>
-    <string name="content_description_detail_close">Close %s\'s details</string>
+
+    <string name="users_error">Could not retrieve list of users. Tap to retry.</string>
+    <string name="show_error_details">Tap here to show error details.</string>
+    <string name="unknown_error">Unknown error.</string>
 </resources>

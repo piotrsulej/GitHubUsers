@@ -15,11 +15,9 @@ class UsersConverter @Inject constructor() : Converter<UserList, List<@JvmSuppre
             User(
                 name = user.userDTO.login,
                 avatarUrl = user.userDTO.avatarUrl,
-                repositoryNames = user.repositories.joinToString(
-                    transform = RepositoryDTO::name,
-                    separator = "\n"
-                ),
-                detailsExpanded = input.expandedUserNames.any { it == user.userDTO.login }
+                repositoryNames = user.repositories.orEmpty().joinToString(
+                    transform = RepositoryDTO::name
+                )
             )
         }.filter { user ->
             isCompatibleWithSearchQuery(user, input)

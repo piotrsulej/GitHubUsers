@@ -18,37 +18,38 @@ class UsersConverterTest {
 
         val result = testSubject.convert(list)
 
-        val expectedResult = listOf(dummyUser(), OTHER_USER)
+        val expectedResult = listOf(DUMMY_USER, OTHER_USER)
         assertThat(result).isEqualTo(expectedResult)
     }
 
     @Test
-    fun `Show expanded user`() {
-        val list = UserList(DUMMY_USER_DETAILS, expandedUserNames = listOf(DUMMY_USER_LOGIN))
+    fun `Search for user login`() {
+        val list = UserList(DUMMY_USER_DETAILS, searchQuery = DUMMY_LOGIN)
 
         val result = testSubject.convert(list)
 
-        val expectedResult = listOf(dummyUser(expanded = true), OTHER_USER)
+        val expectedResult = listOf(DUMMY_USER)
         assertThat(result).isEqualTo(expectedResult)
     }
 
     @Test
-    fun `Show filtered user`() {
-        val list = UserList(DUMMY_USER_DETAILS, searchQuery = DUMMY_USER_LOGIN)
+    fun `Search for repository names`() {
+        val list = UserList(DUMMY_USER_DETAILS, searchQuery = DUMMY_REPO)
 
         val result = testSubject.convert(list)
 
-        val expectedResult = listOf(dummyUser())
+        val expectedResult = listOf(DUMMY_USER)
         assertThat(result).isEqualTo(expectedResult)
     }
 
     companion object {
-        private const val DUMMY_USER_LOGIN = "user1"
+        private const val DUMMY_LOGIN = "user1"
+        private const val DUMMY_REPO = "repo1x1"
         private val DUMMY_USER_DETAILS = listOf(
             UserDetails(
-                userDTO = UserDTO(login = DUMMY_USER_LOGIN, avatarUrl = "url1"),
+                userDTO = UserDTO(login = DUMMY_LOGIN, avatarUrl = "url1"),
                 repositories = listOf(
-                    RepositoryDTO("repo1x1"),
+                    RepositoryDTO(DUMMY_REPO),
                     RepositoryDTO("repo1x2")
                 )
             ),
@@ -63,17 +64,13 @@ class UsersConverterTest {
         private val OTHER_USER = User(
             name = "user2",
             avatarUrl = "url2",
-            repositoryNames = "repo2x1\nrepo2x2",
-            detailsExpanded = false
+            repositoryNames = "repo2x1, repo2x2"
         )
 
-        private fun dummyUser(expanded: Boolean = false): User {
-            return User(
-                name = "user1",
-                avatarUrl = "url1",
-                repositoryNames = "repo1x1\nrepo1x2",
-                detailsExpanded = expanded
-            )
-        }
+        private val DUMMY_USER = User(
+            name = DUMMY_LOGIN,
+            avatarUrl = "url1",
+            repositoryNames = "$DUMMY_REPO, repo1x2"
+        )
     }
 }

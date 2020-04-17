@@ -1,52 +1,57 @@
 package pl.sulej.users.model
 
+import io.reactivex.Flowable
 import io.reactivex.Single
 import pl.sulej.users.model.data.RepositoryDTO
 import pl.sulej.users.model.data.UserDTO
 import pl.sulej.users.model.data.UserDetails
 import pl.sulej.users.model.network.GitHubUsersApi
+import pl.sulej.utilities.asynchronicity.SchedulerProvider
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class UsersRepository @Inject constructor(
-    private val networkApi: GitHubUsersApi
+    private val networkApi: GitHubUsersApi,
+    private val schedulerProvider: SchedulerProvider
 ) : UsersModel {
 
     private var cachedUsers: List<UserDetails>? = null
 
-    override fun getUsersWithRepositoriesOfUser(userLogin: String): Single<List<UserDetails>> {
-        val cachedUser = cachedUsers?.find { it.userDTO.login == userLogin }
-        return if (cachedUser != null && cachedUser.repositories.isEmpty()) {
-            getUsersRepositories(cachedUser.userDTO).map {
-                cachedUsers
+    override fun getUsers(): Flowable<List<UserDetails>> {
+        val users = getCachedUsersOrNull() ?: getUsersFromNetwork()
+        return users
+            .flatMapPublisher { Flowable.fromIterable(it) }
+            .flatMap {
+                (getCachedUserRepositoriesOrNull(it) ?: getUserRepositoriesFromNetwork(it))
+                    .toFlowable()
+                    .subscribeOn(schedulerProvider.subscriptionScheduler())
             }
-        } else {
-            Single.just(cachedUsers)
-        }
+            .doOnNext { cacheUserRepositories(it.userDTO, it.repositories) }
+            .map { cachedUsers.orEmpty() }
     }
 
-    override fun getUsers(): Single<List<UserDetails>> =
-        getCachedUsersOrNull() ?: getUsersFromNetwork()
+    private fun getCachedUserRepositoriesOrNull(cachedUser: UserDetails): Single<UserDetails>? =
+        cachedUser.repositories?.let { Single.just(cachedUser) }
+
+    private fun getUserRepositoriesFromNetwork(cachedUser: UserDetails): Single<UserDetails> {
+        return networkApi.getUserRepositories(cachedUser.userDTO.login).map { repositories ->
+            UserDetails(
+                userDTO = cachedUser.userDTO,
+                repositories = repositories.take(REPOSITORY_NAMES_COUNT)
+            )
+        }
+    }
 
     private fun getCachedUsersOrNull(): Single<List<UserDetails>>? =
         cachedUsers?.let { users -> Single.just(users) }
 
-    private fun getUsersRepositories(userDTO: UserDTO): Single<List<UserDetails>> {
-        return networkApi
-            .getUserRepositories(userDTO.login)
-            .map { downloadedRepositories ->
-                cacheUserRepositories(userDTO, downloadedRepositories)
-                cachedUsers
-            }
-    }
-
-    private fun cacheUserRepositories(userDTO: UserDTO, repositories: List<RepositoryDTO>) {
+    private fun cacheUserRepositories(userDTO: UserDTO, repositories: List<RepositoryDTO>?) {
         cachedUsers = cachedUsers.orEmpty().map { user ->
             if (user.userDTO == userDTO)
                 UserDetails(
                     userDTO = userDTO,
-                    repositories = repositories.take(REPOSITORY_NAMES_COUNT)
+                    repositories = repositories.orEmpty().take(REPOSITORY_NAMES_COUNT)
                 )
             else user
         }
@@ -62,11 +67,8 @@ class UsersRepository @Inject constructor(
     }
 
     private fun cacheUsers(downloadedUsers: List<UserDTO>) {
-        cachedUsers = downloadedUsers.map { downloadedUser ->
-            UserDetails(
-                userDTO = downloadedUser,
-                repositories = emptyList()
-            )
+        cachedUsers = downloadedUsers.map { userDto ->
+            UserDetails(userDto)
         }
     }
 
