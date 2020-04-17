@@ -10,7 +10,7 @@ import pl.sulej.users.model.data.RepositoryDTO
 import pl.sulej.users.model.data.UserDTO
 import pl.sulej.users.model.data.UserDetails
 import pl.sulej.users.model.network.GitHubUsersApi
-import pl.sulej.utilities.asynchronicity.ONCE
+import pl.sulej.utilities.ONCE
 import pl.sulej.utilities.asynchronicity.TestSchedulerProvider
 
 class UsersRepositoryTest {

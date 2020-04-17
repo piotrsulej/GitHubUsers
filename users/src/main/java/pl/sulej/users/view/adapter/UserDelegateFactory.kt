@@ -21,7 +21,7 @@ class UserDelegateFactory @Inject constructor(private val imageLoader: ImageLoad
         bind {
             imageLoader.load(imageUrl = item.avatarUrl, targetView = avatar)
             name.text = item.name
-            repositories.text = item.repositoryNames
+            repositories.text = item.repositoriesInfo
             repositories.visibility =
                 if (repositories.text.isEmpty()) View.GONE
                 else View.VISIBLE

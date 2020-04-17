@@ -10,7 +10,7 @@ import pl.sulej.users.model.data.RepositoryDTO
 import pl.sulej.users.model.data.UserDTO
 import pl.sulej.users.model.data.UserDetails
 import pl.sulej.users.view.data.User
-import pl.sulej.utilities.asynchronicity.TWICE
+import pl.sulej.utilities.TWICE
 import pl.sulej.utilities.asynchronicity.TestSubscriptionsMapManager
 import pl.sulej.utilities.design.Converter
 import pl.sulej.utilities.resources.StringProvider
@@ -131,7 +131,7 @@ class UsersPresenterTest {
             User(
                 name = "Gorn",
                 avatarUrl = "https://custom-gwent.com/cardsBg/8b404ca7f758f2af1eb16e4569c2ca68.jpeg",
-                repositoryNames = "Zemsta Gorna, Zbroja najemnika, Nowy Obóz"
+                repositoriesInfo = "Zemsta Gorna, Zbroja najemnika, Nowy Obóz"
             )
         )
     }

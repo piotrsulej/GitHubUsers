@@ -1,4 +1,4 @@
-package pl.sulej.utilities.asynchronicity
+package pl.sulej.utilities
 
 import org.mockito.internal.verification.Times
 
