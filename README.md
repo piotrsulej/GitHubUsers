@@ -5,10 +5,8 @@
 </p>
 
 ## Features
-* Application will display list of the first 30 GitHub users
-* You can expand any user to see their list of repositories
+* Application will display list of the first 30 GitHub users and 3 of their repositories
 * Application will download users list only once on startup
-* Application will download list of repositories for specific user only once after you will click on "more" icon
 * You can filter the list by typing part of user's login
 * You can filter the list by typing part of user's repository name if it was already downloaded
 * Application works correctly on RTL layouts
