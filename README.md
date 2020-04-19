@@ -21,13 +21,14 @@
 ### Network operations
 * https://github.com/square/retrofit
 ### Database
-* https://developer.android.com/topic/libraries/architecture/room
+* https://developer.android.com/jetpack/androidx/releases/room
 ### Testing
 * https://github.com/junit-team/junit4
 * https://github.com/nhaarman/mockito-kotlin
 * https://github.com/joel-costigliola/assertj-core
 ### User Interface
-* https://developer.android.com/jetpack/androidx
+* https://developer.android.com/jetpack/androidx/releases/appcompat
+* https://developer.android.com/jetpack/androidx/releases/constraintlayout
 * https://github.com/sockeqwe/AdapterDelegates
 
 ## Ideas for future improvements
