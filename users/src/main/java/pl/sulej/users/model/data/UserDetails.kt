@@ -1,6 +1,7 @@
 package pl.sulej.users.model.data
 
 data class UserDetails(
-    val userDTO: UserDTO,
-    val repositories: List<RepositoryDTO>? = null
+    val login: String,
+    val avatarUrl: String,
+    val repositoryNames: List<String>? = null
 )

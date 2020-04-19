@@ -7,10 +7,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import pl.sulej.users.R
-import pl.sulej.users.model.data.RepositoryDTO
-import pl.sulej.users.model.data.UserDTO
 import pl.sulej.users.model.data.UserDetails
-import pl.sulej.users.presentation.UserList
+import pl.sulej.users.presentation.FilteredUserList
 import pl.sulej.users.view.data.User
 import pl.sulej.utilities.resources.StringProvider
 
@@ -25,7 +23,7 @@ class UsersConverterTest(private val testCase: TestCase) {
 
     @Test
     fun `Convert users`() {
-        val list = UserList(testCase.inputUserDetails, testCase.inputSearchQuery)
+        val list = FilteredUserList(testCase.inputUserDetails, testCase.inputSearchQuery)
 
         val result = testSubject.convert(list)
 
@@ -82,18 +80,18 @@ class UsersConverterTest(private val testCase: TestCase) {
             ),
             TestCase(
                 inputUserDetails = listOf(
-                    createUserDetails("1").copy(repositories = null),
+                    createUserDetails("1").copy(repositoryNames = null),
                     createUserDetails("2")
                 ),
                 inputSearchQuery = "user",
                 expectedOutput = listOf(
-                    createUser("1").copy(repositoriesInfo = NO_DATA_ABOUT_REPOSITORIES),
+                    createUser("1").copy(repositoriesInfo = "", isLoadingRepositories = true),
                     createUser("2")
                 )
             ),
             TestCase(
                 inputUserDetails = listOf(
-                    createUserDetails("1").copy(repositories = emptyList()),
+                    createUserDetails("1").copy(repositoryNames = emptyList()),
                     createUserDetails("2")
                 ),
                 inputSearchQuery = "user",
@@ -108,15 +106,17 @@ class UsersConverterTest(private val testCase: TestCase) {
             User(
                 name = "user$id",
                 avatarUrl = "url$id",
-                repositoriesInfo = "repo${id}x1, repo${id}x2"
+                repositoriesInfo = "repo${id}x1, repo${id}x2",
+                isLoadingRepositories = false
             )
 
         private fun createUserDetails(id: String) =
             UserDetails(
-                userDTO = UserDTO(login = "user$id", avatarUrl = "url$id"),
-                repositories = listOf(
-                    RepositoryDTO("repo${id}x1"),
-                    RepositoryDTO("repo${id}x2")
+                login = "user$id",
+                avatarUrl = "url$id",
+                repositoryNames = listOf(
+                    "repo${id}x1",
+                    "repo${id}x2"
                 )
             )
     }

@@ -5,7 +5,7 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import pl.sulej.githubusers.GitHubUsersApplication
-import pl.sulej.users.dependency.NetworkModule
+import pl.sulej.users.dependency.UsersModule
 import pl.sulej.utilities.dependency.AsynchronicityModule
 import javax.inject.Singleton
 
@@ -13,9 +13,8 @@ import javax.inject.Singleton
 @Component(
     modules = [
         AndroidInjectionModule::class,
-        ActivitiesModule::class,
+        UsersModule::class,
         AsynchronicityModule::class,
-        NetworkModule::class,
         AndroidModule::class
     ]
 )

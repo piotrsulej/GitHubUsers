@@ -6,8 +6,6 @@ import org.junit.Test
 import pl.sulej.users.R
 import pl.sulej.users.UsersContract
 import pl.sulej.users.model.UsersModel
-import pl.sulej.users.model.data.RepositoryDTO
-import pl.sulej.users.model.data.UserDTO
 import pl.sulej.users.model.data.UserDetails
 import pl.sulej.users.view.data.User
 import pl.sulej.utilities.TWICE
@@ -18,7 +16,7 @@ import pl.sulej.utilities.resources.StringProvider
 class UsersPresenterTest {
 
     private val model: UsersModel = mock()
-    private val converter: Converter<UserList, List<User>> = mock {
+    private val converter: Converter<FilteredUserList, List<User>> = mock {
         on { convert(CONVERTER_EXPECTED_LIST) } doReturn DUMMY_USERS
     }
     private val view: UsersContract.View = mock()
@@ -57,7 +55,7 @@ class UsersPresenterTest {
     @Test
     fun `Show updated users`() {
         given(model.getUsers()).willReturn(Flowable.just(DUMMY_MODEL_USERS, DUMMY_MODEL_USERS))
-        val list = UserList(DUMMY_MODEL_USERS)
+        val list = FilteredUserList(DUMMY_MODEL_USERS)
         given(converter.convert(list)).willReturn(DUMMY_USERS)
 
         testSubject.viewAvailable()
@@ -96,7 +94,7 @@ class UsersPresenterTest {
     fun `Show filtered users`() {
         given(model.getUsers()).willReturn(Flowable.just(DUMMY_MODEL_USERS))
 
-        val filteredList = UserList(DUMMY_MODEL_USERS, searchQuery = DUMMY_LOGIN)
+        val filteredList = FilteredUserList(DUMMY_MODEL_USERS, searchQuery = DUMMY_LOGIN)
         given(converter.convert(filteredList)).willReturn(DUMMY_USERS)
 
         testSubject.searchQueryUpdated(DUMMY_LOGIN)
@@ -115,23 +113,22 @@ class UsersPresenterTest {
         private val ERROR_WITHOUT_MESSAGE = Throwable(NO_ERROR_MESSAGE)
         private val DUMMY_MODEL_USERS = listOf(
             UserDetails(
-                userDTO = UserDTO(
-                    login = "Gorn",
-                    avatarUrl = "https://custom-gwent.com/cardsBg/8b404ca7f758f2af1eb16e4569c2ca68.jpeg"
-                ),
-                repositories = listOf(
-                    RepositoryDTO("Zemsta Gorna"),
-                    RepositoryDTO("Zbroja najemnika"),
-                    RepositoryDTO("Nowy Obóz")
+                login = "Gorn",
+                avatarUrl = "https://custom-gwent.com/cardsBg/8b404ca7f758f2af1eb16e4569c2ca68.jpeg",
+                repositoryNames = listOf(
+                    "Zemsta Gorna",
+                    "Zbroja najemnika",
+                    "Nowy Obóz"
                 )
             )
         )
-        private val CONVERTER_EXPECTED_LIST = UserList(DUMMY_MODEL_USERS)
+        private val CONVERTER_EXPECTED_LIST = FilteredUserList(DUMMY_MODEL_USERS)
         private val DUMMY_USERS = listOf(
             User(
                 name = "Gorn",
                 avatarUrl = "https://custom-gwent.com/cardsBg/8b404ca7f758f2af1eb16e4569c2ca68.jpeg",
-                repositoriesInfo = "Zemsta Gorna, Zbroja najemnika, Nowy Obóz"
+                repositoriesInfo = "Zemsta Gorna, Zbroja najemnika, Nowy Obóz",
+                isLoadingRepositories = false
             )
         )
     }

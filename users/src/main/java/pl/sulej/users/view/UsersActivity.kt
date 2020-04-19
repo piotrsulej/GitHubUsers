@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_users.*
 import pl.sulej.users.R
 import pl.sulej.users.UsersContract
 import pl.sulej.users.view.adapter.UsersAdapterFactory
@@ -28,7 +28,7 @@ class UsersActivity : AppCompatActivity(), UsersContract.View {
         super.onCreate(savedInstanceState)
         AndroidInjection.inject(this)
         presenter.viewCreated(this)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_users)
         initializeUsersList()
         initializeSearchBar()
         initializeErrorCard()

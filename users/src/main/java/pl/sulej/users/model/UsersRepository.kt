@@ -1,71 +1,101 @@
 package pl.sulej.users.model
 
 import io.reactivex.Flowable
-import io.reactivex.Single
-import pl.sulej.users.model.data.UserDTO
 import pl.sulej.users.model.data.UserDetails
+import pl.sulej.users.model.database.UserEntity
+import pl.sulej.users.model.database.UsersDao
 import pl.sulej.users.model.network.GitHubUsersApi
+import pl.sulej.users.model.network.RepositoryDto
+import pl.sulej.users.model.network.UserDto
 import pl.sulej.utilities.asynchronicity.SchedulerProvider
+import pl.sulej.utilities.asynchronicity.fireAndForget
+import pl.sulej.utilities.log.Logger
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class UsersRepository @Inject constructor(
-    private val networkApi: GitHubUsersApi,
-    private val schedulerProvider: SchedulerProvider
+    private val network: GitHubUsersApi,
+    private val database: UsersDao,
+    private val schedulerProvider: SchedulerProvider,
+    private val logger: Logger
 ) : UsersModel {
 
-    private var cachedUsers: List<UserDetails>? = null
+    private val detailRequestsInProgress = mutableListOf<String>()
 
     override fun getUsers(): Flowable<List<UserDetails>> =
-        (getCachedUsersOrNull() ?: getUsersFromNetwork())
-            .flatMapPublisher { users -> Flowable.fromIterable(users) }
-            .flatMap { user ->
-                (getCachedUserDetailsOrNull(user) ?: getUserDetailsFromNetwork(user))
-                    .toFlowable()
-                    .subscribeOn(schedulerProvider.subscriptionScheduler())
+        database.getUsers().map { users ->
+            if (users.isEmpty()) {
+                downloadUsers()
             }
-            .doOnNext { user -> cacheUserDetails(user) }
-            .map { cachedUsers.orEmpty() }
+            users.map(this::getUserDetails)
+        }
 
-    private fun getUsersFromNetwork(): Single<List<UserDetails>> {
-        return networkApi
+    private fun getUserDetails(user: UserEntity): UserDetails =
+        UserDetails(
+            login = user.login,
+            avatarUrl = user.avatarUrl,
+            repositoryNames = convertOrDownloadRepositoryNames(user)
+        )
+
+    private fun convertOrDownloadRepositoryNames(user: UserEntity): List<String>? =
+        if (user.repositoryNames != null || detailRequestsInProgress.contains(user.login)) {
+            user.repositoryNames?.split(",")?.filter(String::isNotBlank)
+        } else {
+            downloadUserDetails(user.login, user.avatarUrl)
+            detailRequestsInProgress.add(user.login)
+            null
+        }
+
+    private fun downloadUsers() {
+        logger.debugLog(LOGGER_TAG, "Getting list of users from network.")
+        network
             .getUsers()
-            .map { downloadedUsers ->
-                cacheUsers(downloadedUsers)
-                cachedUsers
-            }
+            .doOnSuccess(this::cacheUsers)
+            .fireAndForget(schedulerProvider.subscriptionScheduler())
     }
 
-    private fun getUserDetailsFromNetwork(cachedUser: UserDetails): Single<UserDetails> =
-        networkApi.getUserRepositories(cachedUser.userDTO.login).map { repositories ->
-            UserDetails(
-                userDTO = cachedUser.userDTO,
-                repositories = repositories.take(REPOSITORY_NAMES_COUNT)
+    private fun cacheUsers(downloadedUsers: List<UserDto>) {
+        logger.debugLog(LOGGER_TAG, "Saving ${downloadedUsers.size} users to database.")
+        downloadedUsers.forEach { userDto ->
+            val entity = UserEntity(
+                userDto.login,
+                userDto.avatarUrl,
+                null
             )
-        }.onErrorReturnItem(cachedUser)
-
-    private fun getCachedUsersOrNull(): Single<List<UserDetails>>? =
-        cachedUsers?.let { users -> Single.just(users) }
-
-    private fun getCachedUserDetailsOrNull(cachedUser: UserDetails): Single<UserDetails>? =
-        cachedUser.repositories?.let { Single.just(cachedUser) }
-
-    private fun cacheUsers(downloadedUsers: List<UserDTO>) {
-        cachedUsers = downloadedUsers.map { userDto ->
-            UserDetails(userDto)
+            database.insert(entity).fireAndForget(schedulerProvider.subscriptionScheduler())
         }
     }
+
+    private fun downloadUserDetails(login: String, avatarUrl: String) {
+        logger.debugLog(LOGGER_TAG, "Getting $login's details from network.")
+        logger.debugLog(LOGGER_TAG, "${detailRequestsInProgress.size} detail requests in progress.")
+        network.getUserRepositories(login)
+            .doOnEvent { _, _ -> detailRequestsInProgress.remove(login) }
+            .doOnSuccess { repositories ->
+                val details = mapDetails(login, avatarUrl, repositories)
+                cacheUserDetails(details)
+            }
+            .fireAndForget(schedulerProvider.subscriptionScheduler())
+    }
+
+    private fun mapDetails(login: String, avatarUrl: String, repositories: List<RepositoryDto>) =
+        UserDetails(
+            login = login,
+            avatarUrl = avatarUrl,
+            repositoryNames = repositories.take(REPOSITORY_NAMES_COUNT).map(RepositoryDto::name)
+        )
 
     private fun cacheUserDetails(userDetails: UserDetails) {
-        cachedUsers = cachedUsers.orEmpty().map { cachedUserDetails ->
-            if (cachedUserDetails.userDTO == userDetails.userDTO)
-                userDetails
-            else cachedUserDetails
-        }
+        logger.debugLog(LOGGER_TAG, "Saving ${userDetails.login}'s details to database.")
+        val entity = UserEntity(
+            userDetails.login,
+            userDetails.avatarUrl,
+            userDetails.repositoryNames?.joinToString(",")
+        )
+        database.update(entity).fireAndForget(schedulerProvider.subscriptionScheduler())
     }
 
     companion object {
+        private const val LOGGER_TAG = "UserRepository"
         private const val REPOSITORY_NAMES_COUNT = 3
     }
 }

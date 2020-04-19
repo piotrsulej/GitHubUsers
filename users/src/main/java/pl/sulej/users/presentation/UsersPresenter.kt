@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class UsersPresenter @Inject constructor(
     private val model: UsersModel,
-    private val converter: Converter<UserList, List<User>>,
+    private val converter: Converter<FilteredUserList, List<User>>,
     private val subscriptionsManager: SubscriptionsManager,
     private val stringProvider: StringProvider
 ) : UsersContract.Presenter {
@@ -56,8 +56,12 @@ class UsersPresenter @Inject constructor(
     }
 
     private fun handleUsersList(users: List<UserDetails>) {
-        val userList = UserList(users, searchQuery)
-        val convertedUsers = converter.convert(userList)
-        view?.showUsers(convertedUsers)
+        if (users.isEmpty()) {
+            view?.showLoadingIndicator()
+        } else {
+            val userList = FilteredUserList(users, searchQuery)
+            val convertedUsers = converter.convert(userList)
+            view?.showUsers(convertedUsers)
+        }
     }
 }
