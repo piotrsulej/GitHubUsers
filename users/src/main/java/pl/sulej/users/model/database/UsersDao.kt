@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import io.reactivex.Completable
-import io.reactivex.Flowable
+import io.reactivex.Observable
 
 @Dao
 interface UsersDao {
@@ -17,5 +17,5 @@ interface UsersDao {
     fun update(user: UserEntity): Completable
 
     @Query("SELECT * from users")
-    fun getUsers(): Flowable<List<UserEntity>>
+    fun getUsers(): Observable<List<UserEntity>>
 }

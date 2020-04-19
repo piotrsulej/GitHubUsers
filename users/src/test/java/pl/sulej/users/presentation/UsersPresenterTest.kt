@@ -2,6 +2,7 @@ package pl.sulej.users.presentation
 
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import org.junit.Test
 import pl.sulej.users.R
 import pl.sulej.users.UsersContract
@@ -36,7 +37,7 @@ class UsersPresenterTest {
 
     @Test
     fun `Show loading indicator`() {
-        given(model.getUsers()).willReturn(Flowable.empty())
+        given(model.getUsers()).willReturn(Observable.empty())
 
         testSubject.viewAvailable()
 
@@ -45,7 +46,7 @@ class UsersPresenterTest {
 
     @Test
     fun `Show users`() {
-        given(model.getUsers()).willReturn(Flowable.just(DUMMY_MODEL_USERS))
+        given(model.getUsers()).willReturn(Observable.just(DUMMY_MODEL_USERS))
 
         testSubject.viewAvailable()
 
@@ -54,7 +55,7 @@ class UsersPresenterTest {
 
     @Test
     fun `Show updated users`() {
-        given(model.getUsers()).willReturn(Flowable.just(DUMMY_MODEL_USERS, DUMMY_MODEL_USERS))
+        given(model.getUsers()).willReturn(Observable.just(DUMMY_MODEL_USERS, DUMMY_MODEL_USERS))
         val list = FilteredUserList(DUMMY_MODEL_USERS)
         given(converter.convert(list)).willReturn(DUMMY_USERS)
 
@@ -65,7 +66,7 @@ class UsersPresenterTest {
 
     @Test
     fun `Show error`() {
-        given(model.getUsers()).willReturn(Flowable.error(DUMMY_ERROR))
+        given(model.getUsers()).willReturn(Observable.error(DUMMY_ERROR))
 
         testSubject.viewAvailable()
 
@@ -74,7 +75,7 @@ class UsersPresenterTest {
 
     @Test
     fun `Show default error`() {
-        given(model.getUsers()).willReturn(Flowable.error(ERROR_WITHOUT_MESSAGE))
+        given(model.getUsers()).willReturn(Observable.error(ERROR_WITHOUT_MESSAGE))
 
         testSubject.viewAvailable()
 
@@ -83,7 +84,7 @@ class UsersPresenterTest {
 
     @Test
     fun `Show users after clicking error`() {
-        given(model.getUsers()).willReturn(Flowable.just(DUMMY_MODEL_USERS))
+        given(model.getUsers()).willReturn(Observable.just(DUMMY_MODEL_USERS))
 
         testSubject.errorClicked()
 
@@ -92,7 +93,7 @@ class UsersPresenterTest {
 
     @Test
     fun `Show filtered users`() {
-        given(model.getUsers()).willReturn(Flowable.just(DUMMY_MODEL_USERS))
+        given(model.getUsers()).willReturn(Observable.just(DUMMY_MODEL_USERS))
 
         val filteredList = FilteredUserList(DUMMY_MODEL_USERS, searchQuery = DUMMY_LOGIN)
         given(converter.convert(filteredList)).willReturn(DUMMY_USERS)

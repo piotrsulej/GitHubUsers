@@ -3,7 +3,7 @@ package pl.sulej.users.model
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.then
-import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
@@ -39,7 +39,7 @@ class UsersRepositoryTest {
     @Test
     fun `Update user details from network into database`() {
         val userWithoutRepositories = listOf(DUMMY_ENTITY_WITHOUT_REPOSITORIES)
-        given(database.getUsers()).willReturn(Flowable.just(userWithoutRepositories))
+        given(database.getUsers()).willReturn(Observable.just(userWithoutRepositories))
 
         testSubject.getUsers().test()
 
@@ -50,7 +50,7 @@ class UsersRepositoryTest {
 
     @Test
     fun `Insert users from network into database`() {
-        given(database.getUsers()).willReturn(Flowable.just(emptyList()))
+        given(database.getUsers()).willReturn(Observable.just(emptyList()))
         given(network.getUserRepositories(DUMMY_USER.login)).willReturn(Single.error(Throwable()))
 
         testSubject.getUsers().test()
@@ -62,11 +62,31 @@ class UsersRepositoryTest {
 
     @Test
     fun `Get users from database`() {
-        given(database.getUsers()).willReturn(Flowable.just(listOf(DUMMY_ENTITY)))
+        given(database.getUsers()).willReturn(Observable.just(listOf(DUMMY_ENTITY)))
 
         val result = testSubject.getUsers().test()
 
         result.assertValue(DUMMY_USER_DETAILS)
+    }
+
+    @Test
+    fun `Ignore network error`() {
+        given(network.getUsers()).willReturn(Single.error(DUMMY_ERROR))
+        given(database.getUsers()).willReturn(Observable.just(listOf(DUMMY_ENTITY)))
+
+        val result = testSubject.getUsers().test()
+
+        result.assertValue(DUMMY_USER_DETAILS)
+    }
+
+    @Test
+    fun `Propagate network error`() {
+        given(network.getUsers()).willReturn(Single.error(DUMMY_ERROR))
+        given(database.getUsers()).willReturn(Observable.just(emptyList()))
+
+        val result = testSubject.getUsers().test()
+
+        result.assertError(DUMMY_ERROR)
     }
 
     companion object {
@@ -101,5 +121,6 @@ class UsersRepositoryTest {
                 repositoryNames = EXPECTED_REPOSITORIES
             )
         )
+        private val DUMMY_ERROR = Throwable("Nie interesuje mnie kim jesteś.")
     }
 }

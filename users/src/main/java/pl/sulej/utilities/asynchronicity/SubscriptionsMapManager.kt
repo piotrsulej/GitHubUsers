@@ -1,6 +1,6 @@
 package pl.sulej.utilities.asynchronicity
 
-import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -14,7 +14,7 @@ class SubscriptionsMapManager @Inject constructor(
 
     override fun <Data> subscribe(
         tag: String,
-        source: Flowable<Data>,
+        source: Observable<Data>,
         onNext: (Data) -> Unit,
         onComplete: () -> Unit,
         onError: (Throwable) -> Unit

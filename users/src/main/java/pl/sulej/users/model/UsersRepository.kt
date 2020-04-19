@@ -1,6 +1,7 @@
 package pl.sulej.users.model
 
-import io.reactivex.Flowable
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import pl.sulej.users.model.data.UserDetails
 import pl.sulej.users.model.database.UserEntity
 import pl.sulej.users.model.database.UsersDao
@@ -20,14 +21,17 @@ class UsersRepository @Inject constructor(
 ) : UsersModel {
 
     private val detailRequestsInProgress = mutableListOf<String>()
+    private lateinit var databaseDownloadProgress: PublishSubject<List<UserEntity>>
 
-    override fun getUsers(): Flowable<List<UserDetails>> =
-        database.getUsers().map { users ->
+    override fun getUsers(): Observable<List<UserDetails>> {
+        databaseDownloadProgress = PublishSubject.create()
+        return database.getUsers().mergeWith(databaseDownloadProgress).map { users ->
             if (users.isEmpty()) {
                 downloadUsers()
             }
             users.map(this::getUserDetails)
         }
+    }
 
     private fun getUserDetails(user: UserEntity): UserDetails =
         UserDetails(
@@ -49,6 +53,7 @@ class UsersRepository @Inject constructor(
         logger.debugLog(LOGGER_TAG, "Getting list of users from network.")
         network
             .getUsers()
+            .doOnError(databaseDownloadProgress::onError)
             .doOnSuccess(this::cacheUsers)
             .fireAndForget(schedulerProvider.subscriptionScheduler())
     }

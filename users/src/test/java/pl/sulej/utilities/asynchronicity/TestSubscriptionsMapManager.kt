@@ -1,6 +1,6 @@
 package pl.sulej.utilities.asynchronicity
 
-import io.reactivex.Flowable
+import io.reactivex.Observable
 
 open class TestSubscriptionsMapManager : SubscriptionsManager {
 
@@ -8,7 +8,7 @@ open class TestSubscriptionsMapManager : SubscriptionsManager {
 
     override fun <Data> subscribe(
         tag: String,
-        source: Flowable<Data>,
+        source: Observable<Data>,
         onNext: (Data) -> Unit,
         onComplete: () -> Unit,
         onError: (Throwable) -> Unit
