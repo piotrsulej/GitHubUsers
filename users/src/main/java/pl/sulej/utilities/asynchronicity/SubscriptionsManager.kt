@@ -1,13 +1,14 @@
 package pl.sulej.utilities.asynchronicity
 
-import io.reactivex.Single
+import io.reactivex.Observable
 
 interface SubscriptionsManager {
 
     fun <Data> subscribe(
         tag: String,
-        source: Single<Data>,
-        onSuccess: (Data) -> Unit = {},
+        source: Observable<Data>,
+        onNext: (Data) -> Unit = {},
+        onComplete: () -> Unit = {},
         onError: (Throwable) -> Unit = {}
     )
 

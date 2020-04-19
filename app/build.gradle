@@ -34,16 +34,18 @@ android {
 }
 
 dependencies {
+    implementation kotlinStandardLibrary
+
     implementation project(":users")
+
+    implementation retrofit
+    implementation rxjava
+    implementation room
+
+    implementation androidx.appCompat
+    implementation adapterDelegates
 
     implementation daggerAndroid
     kapt daggerAndroidProcessor
     kapt daggerCompiler
-
-    implementation retrofit
-    implementation kotlinStandardLibrary
-    implementation androidx.ktx
-    implementation androidx.appCompat
-    implementation adapterDelegates
-    implementation rxjava
 }

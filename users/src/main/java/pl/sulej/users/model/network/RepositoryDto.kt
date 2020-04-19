@@ -1,7 +1,7 @@
-package pl.sulej.users.model.data
+package pl.sulej.users.model.network
 
 import com.google.gson.annotations.SerializedName
 
-data class RepositoryDTO(
+data class RepositoryDto(
     @SerializedName("name") val name: String
 )

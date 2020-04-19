@@ -34,10 +34,13 @@ android {
 }
 
 dependencies {
+    implementation kotlinStandardLibrary
+
     implementation retrofit
     implementation rxjava
-    implementation kotlinStandardLibrary
-    implementation androidx.ktx
+    implementation room
+    kapt roomCompiler
+
     implementation androidx.appCompat
     implementation androidx.constraint
     implementation adapterDelegates
