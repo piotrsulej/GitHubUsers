@@ -1,4 +1,4 @@
-package pl.sulej.users.view.data
+package pl.sulej.users.view.user
 
 import pl.sulej.utilities.adapter.AdapterItem
 

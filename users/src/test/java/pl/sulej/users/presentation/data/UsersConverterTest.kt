@@ -7,9 +7,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import pl.sulej.users.R
-import pl.sulej.users.model.data.UserDetails
+import pl.sulej.users.model.UserDetails
 import pl.sulej.users.presentation.FilteredUserList
-import pl.sulej.users.view.data.User
+import pl.sulej.users.presentation.UsersConverter
+import pl.sulej.users.view.user.User
 import pl.sulej.utilities.resources.StringProvider
 
 @RunWith(Parameterized::class)
@@ -19,7 +20,8 @@ class UsersConverterTest(private val testCase: TestCase) {
         on { getString(R.string.user_no_repositories) } doReturn NO_REPOSITORIES
         on { getString(R.string.user_no_data_about_repositories) } doReturn NO_DATA_ABOUT_REPOSITORIES
     }
-    private val testSubject = UsersConverter(stringProvider)
+    private val testSubject =
+        UsersConverter(stringProvider)
 
     @Test
     fun `Convert users`() {

@@ -10,8 +10,7 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_users.*
 import pl.sulej.users.R
 import pl.sulej.users.UsersContract
-import pl.sulej.users.view.adapter.UsersAdapterFactory
-import pl.sulej.users.view.data.User
+import pl.sulej.users.view.user.User
 import pl.sulej.utilities.adapter.BaseAdapter
 import javax.inject.Inject
 

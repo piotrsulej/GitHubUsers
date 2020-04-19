@@ -1,9 +1,8 @@
-package pl.sulej.users.presentation.data
+package pl.sulej.users.presentation
 
 import pl.sulej.users.R
-import pl.sulej.users.model.data.UserDetails
-import pl.sulej.users.presentation.FilteredUserList
-import pl.sulej.users.view.data.User
+import pl.sulej.users.model.UserDetails
+import pl.sulej.users.view.user.User
 import pl.sulej.utilities.design.Converter
 import pl.sulej.utilities.resources.StringProvider
 import javax.inject.Inject

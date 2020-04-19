@@ -1,6 +1,6 @@
 package pl.sulej.users
 
-import pl.sulej.users.view.data.User
+import pl.sulej.users.view.user.User
 
 interface UsersContract {
 

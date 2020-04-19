@@ -1,5 +1,6 @@
-package pl.sulej.users.view.adapter
+package pl.sulej.users.view
 
+import pl.sulej.users.view.user.UserDelegateFactory
 import pl.sulej.utilities.adapter.BaseAdapter
 import javax.inject.Inject
 

@@ -1,14 +1,13 @@
 package pl.sulej.users.presentation
 
 import com.nhaarman.mockitokotlin2.*
-import io.reactivex.Flowable
 import io.reactivex.Observable
 import org.junit.Test
 import pl.sulej.users.R
 import pl.sulej.users.UsersContract
 import pl.sulej.users.model.UsersModel
-import pl.sulej.users.model.data.UserDetails
-import pl.sulej.users.view.data.User
+import pl.sulej.users.model.UserDetails
+import pl.sulej.users.view.user.User
 import pl.sulej.utilities.TWICE
 import pl.sulej.utilities.asynchronicity.TestSubscriptionsMapManager
 import pl.sulej.utilities.design.Converter

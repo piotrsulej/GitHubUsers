@@ -5,8 +5,8 @@ import dagger.Module
 import pl.sulej.users.UsersContract
 import pl.sulej.users.presentation.FilteredUserList
 import pl.sulej.users.presentation.UsersPresenter
-import pl.sulej.users.presentation.data.UsersConverter
-import pl.sulej.users.view.data.User
+import pl.sulej.users.presentation.UsersConverter
+import pl.sulej.users.view.user.User
 import pl.sulej.utilities.design.Converter
 
 @Module

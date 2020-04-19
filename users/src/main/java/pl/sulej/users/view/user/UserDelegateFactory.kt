@@ -1,11 +1,10 @@
-package pl.sulej.users.view.adapter
+package pl.sulej.users.view.user
 
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 import pl.sulej.users.R
-import pl.sulej.users.view.data.User
 import pl.sulej.utilities.adapter.AdapterItem
 import pl.sulej.utilities.images.ImageLoader
 import javax.inject.Inject

@@ -4,13 +4,14 @@ import android.app.Application
 import android.content.res.Resources
 import dagger.Module
 import dagger.Provides
+import dagger.android.AndroidInjectionModule
 import pl.sulej.utilities.log.LogCat
 import pl.sulej.utilities.log.Logger
 import pl.sulej.utilities.resources.AndroidStringProvider
 import pl.sulej.utilities.resources.StringProvider
 import javax.inject.Singleton
 
-@Module
+@Module(includes = [AndroidInjectionModule::class])
 class AndroidModule {
 
     @Provides

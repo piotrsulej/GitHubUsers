@@ -1,4 +1,4 @@
-package pl.sulej.users.model.data
+package pl.sulej.users.model
 
 data class UserDetails(
     val login: String,

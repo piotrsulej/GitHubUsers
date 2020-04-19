@@ -7,7 +7,6 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
-import pl.sulej.users.model.data.UserDetails
 import pl.sulej.users.model.database.UserEntity
 import pl.sulej.users.model.database.UsersDao
 import pl.sulej.users.model.network.GitHubUsersApi

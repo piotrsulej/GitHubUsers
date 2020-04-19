@@ -2,7 +2,6 @@ package pl.sulej.users.model
 
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
-import pl.sulej.users.model.data.UserDetails
 import pl.sulej.users.model.database.UserEntity
 import pl.sulej.users.model.database.UsersDao
 import pl.sulej.users.model.network.GitHubUsersApi
