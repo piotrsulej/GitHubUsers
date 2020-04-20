@@ -8,10 +8,10 @@ import pl.sulej.utilities.dependency.ActivityScope
 @Module(
     includes = [
         UsersPresenterModule::class,
-        ProductionUsersModelModule::class
+        MockUsersModelModule::class
     ]
 )
-abstract class UsersModule {
+abstract class MockUsersModule {
 
     @ActivityScope
     @ContributesAndroidInjector(modules = [UsersViewModule::class])

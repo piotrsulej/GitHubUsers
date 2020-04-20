@@ -13,6 +13,8 @@ import pl.sulej.users.model.network.GitHubUsersApi
 import pl.sulej.users.model.network.RepositoryDto
 import pl.sulej.users.model.network.UserDto
 import pl.sulej.utilities.asynchronicity.TestSchedulerProvider
+import pl.sulej.utilities.asynchronicity.asObservable
+import pl.sulej.utilities.asynchronicity.asSingle
 
 class UsersRepositoryTest {
 
@@ -23,9 +25,9 @@ class UsersRepositoryTest {
     @Before
     fun setUp() {
         given(network.getUsers())
-            .willReturn(Single.just(DUMMY_USERS_FROM_NETWORK))
+            .willReturn(DUMMY_USERS_FROM_NETWORK.asSingle())
         given(network.getUserRepositories(DUMMY_USER.login))
-            .willReturn(Single.just(DUMMY_REPOSITORIES))
+            .willReturn(DUMMY_REPOSITORIES.asSingle())
 
         testSubject = UsersRepository(
             network = network,
@@ -38,7 +40,7 @@ class UsersRepositoryTest {
     @Test
     fun `Update user details from network into database`() {
         val userWithoutRepositories = listOf(DUMMY_ENTITY_WITHOUT_REPOSITORIES)
-        given(database.getUsers()).willReturn(Observable.just(userWithoutRepositories))
+        given(database.getUsers()).willReturn(userWithoutRepositories.asObservable())
 
         testSubject.getUsers().test()
 
@@ -61,7 +63,7 @@ class UsersRepositoryTest {
 
     @Test
     fun `Get users from database`() {
-        given(database.getUsers()).willReturn(Observable.just(listOf(DUMMY_ENTITY)))
+        given(database.getUsers()).willReturn(listOf(DUMMY_ENTITY).asObservable())
 
         val result = testSubject.getUsers().test()
 
@@ -71,7 +73,7 @@ class UsersRepositoryTest {
     @Test
     fun `Ignore network error`() {
         given(network.getUsers()).willReturn(Single.error(DUMMY_ERROR))
-        given(database.getUsers()).willReturn(Observable.just(listOf(DUMMY_ENTITY)))
+        given(database.getUsers()).willReturn(listOf(DUMMY_ENTITY).asObservable())
 
         val result = testSubject.getUsers().test()
 

@@ -1,0 +1,42 @@
+[
+  {
+    "login": "Gorn",
+    "id": 1,
+    "node_id": "MDQ6VXNlcjE=",
+    "avatar_url": "https://i.ytimg.com/vi/NtAHZSHpR-8/hqdefault.jpg",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/gorn",
+    "html_url": "https://github.com/gorn",
+    "followers_url": "https://api.github.com/users/gorn/followers",
+    "following_url": "https://api.github.com/users/gorn/following{/other_user}",
+    "gists_url": "https://api.github.com/users/gorn/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/gorn/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/gorn/subscriptions",
+    "organizations_url": "https://api.github.com/users/gorn/orgs",
+    "repos_url": "https://api.github.com/users/gorn/repos",
+    "events_url": "https://api.github.com/users/gorn/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/gorn/received_events",
+    "type": "User",
+    "site_admin": false
+  },
+  {
+    "login": "Diego",
+    "id": 2,
+    "node_id": "MDQ6VXNlcjI=",
+    "avatar_url": "https://vignette.wikia.nocookie.net/wogen/images/8/8a/Diego.jpg/revision/latest/scale-to-width-down/340?cb=20120226221852",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/diego",
+    "html_url": "https://github.com/diego",
+    "followers_url": "https://api.github.com/users/diego/followers",
+    "following_url": "https://api.github.com/users/diego/following{/other_user}",
+    "gists_url": "https://api.github.com/users/diego/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/diego/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/diego/subscriptions",
+    "organizations_url": "https://api.github.com/users/diego/orgs",
+    "repos_url": "https://api.github.com/users/diego/repos",
+    "events_url": "https://api.github.com/users/diego/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/diego/received_events",
+    "type": "User",
+    "site_admin": false
+  }
+]

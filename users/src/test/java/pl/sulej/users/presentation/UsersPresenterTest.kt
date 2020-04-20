@@ -10,6 +10,7 @@ import pl.sulej.users.model.UserDetails
 import pl.sulej.users.view.user.User
 import pl.sulej.utilities.TWICE
 import pl.sulej.utilities.asynchronicity.TestSubscriptionsMapManager
+import pl.sulej.utilities.asynchronicity.asObservable
 import pl.sulej.utilities.design.Converter
 import pl.sulej.utilities.resources.StringProvider
 
@@ -45,7 +46,7 @@ class UsersPresenterTest {
 
     @Test
     fun `Show users`() {
-        given(model.getUsers()).willReturn(Observable.just(DUMMY_MODEL_USERS))
+        given(model.getUsers()).willReturn(DUMMY_MODEL_USERS.asObservable())
 
         testSubject.viewAvailable()
 
@@ -83,7 +84,7 @@ class UsersPresenterTest {
 
     @Test
     fun `Show users after clicking error`() {
-        given(model.getUsers()).willReturn(Observable.just(DUMMY_MODEL_USERS))
+        given(model.getUsers()).willReturn(DUMMY_MODEL_USERS.asObservable())
 
         testSubject.errorClicked()
 
@@ -92,7 +93,7 @@ class UsersPresenterTest {
 
     @Test
     fun `Show filtered users`() {
-        given(model.getUsers()).willReturn(Observable.just(DUMMY_MODEL_USERS))
+        given(model.getUsers()).willReturn(DUMMY_MODEL_USERS.asObservable())
 
         val filteredList = FilteredUserList(DUMMY_MODEL_USERS, searchQuery = DUMMY_LOGIN)
         given(converter.convert(filteredList)).willReturn(DUMMY_USERS)

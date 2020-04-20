@@ -9,3 +9,5 @@ fun Single<*>.fireAndForget(scheduler: Scheduler) {
         .subscribeOn(scheduler)
         .subscribe()
 }
+
+fun <Type> Type?.asSingle(): Single<Type>? = this?.let { Single.just(it) }
