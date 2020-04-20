@@ -11,6 +11,12 @@
 * You can filter the list by typing part of user's repository name
 * Application works correctly on RTL layouts
 
+## Modules
+* **app** - dependency configuration for production application
+* **app-mock** - dependency configuration for mock application that can be used for automated user interface testing
+* **users** - contains all the code related to users list
+* **users-mock** - contains all the code needed for for automated user interface testing of users list
+
 ## Overview of dependencies
 ### Dependency injection
 * https://github.com/google/dagger
@@ -33,5 +39,5 @@
 
 ## Ideas for future improvements
 * Users screen is inside separate module - this gives the possibility to reuse it in more applications, e.g. with different implementation of model, view or presentation layer.
-* Mock version for automated user interface tests could be created and it should use prepared mocked data in order to be able to test user interface without dependency on real GitHub API.
+* Automated user interface tests can be created for **app-mock** for fast regression testing.
 * `pl.sulej.utilities` package could be placed inside separate module and shared between different features.
