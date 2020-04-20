@@ -32,6 +32,8 @@
 * https://github.com/junit-team/junit4
 * https://github.com/nhaarman/mockito-kotlin
 * https://github.com/joel-costigliola/assertj-core
+### JSON (de)serialization
+* https://github.com/google/gson
 ### User Interface
 * https://developer.android.com/jetpack/androidx/releases/appcompat
 * https://developer.android.com/jetpack/androidx/releases/constraintlayout
