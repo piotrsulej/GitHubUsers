@@ -89,6 +89,15 @@ class UsersRepositoryTest {
     }
 
     @Test
+    fun `Ignore empty user list in database`() {
+        given(database.getUsers()).willReturn(Observable.just(emptyList()))
+
+        val result = testSubject.getUsers().test()
+
+        result.assertNoValues()
+    }
+
+    @Test
     fun `Get users from database`() {
         given(database.getUsers()).willReturn(listOf(DUMMY_ENTITY).asObservable())
 
