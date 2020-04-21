@@ -5,8 +5,9 @@ import io.reactivex.Observable
 import org.junit.Test
 import pl.sulej.users.R
 import pl.sulej.users.UsersContract
-import pl.sulej.users.model.UsersModel
 import pl.sulej.users.model.UserDetails
+import pl.sulej.users.model.UserList
+import pl.sulej.users.model.UsersModel
 import pl.sulej.users.view.user.User
 import pl.sulej.utilities.TWICE
 import pl.sulej.utilities.asynchronicity.TestSubscriptionsMapManager
@@ -56,8 +57,6 @@ class UsersPresenterTest {
     @Test
     fun `Show updated users`() {
         given(model.getUsers()).willReturn(Observable.just(DUMMY_MODEL_USERS, DUMMY_MODEL_USERS))
-        val list = FilteredUserList(DUMMY_MODEL_USERS)
-        given(converter.convert(list)).willReturn(DUMMY_USERS)
 
         testSubject.viewAvailable()
 
@@ -95,7 +94,7 @@ class UsersPresenterTest {
     fun `Show filtered users`() {
         given(model.getUsers()).willReturn(DUMMY_MODEL_USERS.asObservable())
 
-        val filteredList = FilteredUserList(DUMMY_MODEL_USERS, searchQuery = DUMMY_LOGIN)
+        val filteredList = CONVERTER_EXPECTED_LIST.copy(searchQuery = DUMMY_LOGIN)
         given(converter.convert(filteredList)).willReturn(DUMMY_USERS)
 
         testSubject.searchQueryUpdated(DUMMY_LOGIN)
@@ -112,18 +111,20 @@ class UsersPresenterTest {
         private val DUMMY_ERROR = Throwable(DUMMY_ERROR_MESSAGE)
         private val NO_ERROR_MESSAGE: String? = null
         private val ERROR_WITHOUT_MESSAGE = Throwable(NO_ERROR_MESSAGE)
-        private val DUMMY_MODEL_USERS = listOf(
-            UserDetails(
-                login = "Gorn",
-                avatarUrl = "https://custom-gwent.com/cardsBg/8b404ca7f758f2af1eb16e4569c2ca68.jpeg",
-                repositoryNames = listOf(
-                    "Zemsta Gorna",
-                    "Zbroja najemnika",
-                    "Nowy Obóz"
+        private val DUMMY_MODEL_USERS = UserList(
+            listOf(
+                UserDetails(
+                    login = "Gorn",
+                    avatarUrl = "https://custom-gwent.com/cardsBg/8b404ca7f758f2af1eb16e4569c2ca68.jpeg",
+                    repositoryNames = listOf(
+                        "Zemsta Gorna",
+                        "Zbroja najemnika",
+                        "Nowy Obóz"
+                    )
                 )
             )
         )
-        private val CONVERTER_EXPECTED_LIST = FilteredUserList(DUMMY_MODEL_USERS)
+        private val CONVERTER_EXPECTED_LIST = FilteredUserList(DUMMY_MODEL_USERS.users)
         private val DUMMY_USERS = listOf(
             User(
                 name = "Gorn",

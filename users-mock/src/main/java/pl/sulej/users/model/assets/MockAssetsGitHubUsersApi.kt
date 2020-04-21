@@ -12,12 +12,13 @@ class MockAssetsGitHubUsersApi @Inject constructor(
     private val assetsObjectsLoader: AssetsObjectsLoader
 ) : GitHubUsersApi {
 
-    override fun getUsers(): Single<List<UserDto>> {
+    override fun getUsers(): Single<Result<List<UserDto>>> {
         val classType = object : TypeToken<List<UserDto>>() {}.type
-        return assetsObjectsLoader.read<List<UserDto>>(
+        val response = assetsObjectsLoader.read<List<UserDto>>(
             path = "users",
             type = classType
-        ).asSingle() ?: Single.error(IllegalStateException("Could not find mock users list."))
+        )
+        return Result.success(response).asSingle()
     }
 
     override fun getUserRepositories(userLogin: String): Single<List<RepositoryDto>> {
@@ -25,6 +26,6 @@ class MockAssetsGitHubUsersApi @Inject constructor(
         return assetsObjectsLoader.read<List<RepositoryDto>>(
             path = "users/$userLogin/repos",
             type = classType
-        ).asSingle() ?: Single.just(emptyList())
+        ).asSingle()
     }
 }
