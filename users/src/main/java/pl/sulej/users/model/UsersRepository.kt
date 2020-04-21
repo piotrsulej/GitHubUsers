@@ -55,14 +55,18 @@ class UsersRepository @Inject constructor(
             .getUsers()
             .doOnEvent { _, _ -> listRequestInProgress = false }
             .doOnSuccess(this::cacheUsers)
+            .doOnSuccess(this::returnError)
             .fireAndForget(schedulerProvider.subscriptionScheduler())
     }
 
-    private fun cacheUsers(usersResponse: Result<List<UserDto>>) {
+    private fun returnError(usersResponse: Result<List<UserDto>>) {
         usersResponse.exceptionOrNull()?.let { throwable ->
             val listWithError = UserList(error = throwable)
             networkRequest.onNext(listWithError)
         }
+    }
+
+    private fun cacheUsers(usersResponse: Result<List<UserDto>>) {
         val downloadedUsers = usersResponse.getOrNull().orEmpty()
         downloadedUsers.forEach { userDto ->
             val entity = UserEntity(
