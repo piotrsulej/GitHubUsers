@@ -64,7 +64,7 @@ class UsersPresenterTest {
     }
 
     @Test
-    fun `Show error`() {
+    fun `Show error - onError`() {
         given(model.getUsers()).willReturn(Observable.error(DUMMY_ERROR))
 
         testSubject.viewAvailable()
@@ -73,8 +73,26 @@ class UsersPresenterTest {
     }
 
     @Test
-    fun `Show default error`() {
+    fun `Show default - onError`() {
         given(model.getUsers()).willReturn(Observable.error(ERROR_WITHOUT_MESSAGE))
+
+        testSubject.viewAvailable()
+
+        then(view).should().showError(DEFAULT_ERROR_MESSAGE)
+    }
+
+    @Test
+    fun `Show error - onNext`() {
+        given(model.getUsers()).willReturn(UserList(error = DUMMY_ERROR).asObservable())
+
+        testSubject.viewAvailable()
+
+        then(view).should().showError(DUMMY_ERROR_MESSAGE)
+    }
+
+    @Test
+    fun `Show default error - onNext`() {
+        given(model.getUsers()).willReturn(UserList(error = ERROR_WITHOUT_MESSAGE).asObservable())
 
         testSubject.viewAvailable()
 
