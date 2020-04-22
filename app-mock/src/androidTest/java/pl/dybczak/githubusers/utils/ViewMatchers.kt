@@ -6,7 +6,7 @@ import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.action.ViewActions
 import org.hamcrest.Matcher
 
-object noViewMatcher {
+object ViewMatchers {
 
     fun noView(viewMatcher: Matcher<View>) {
         try {

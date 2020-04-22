@@ -5,39 +5,30 @@ import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import org.hamcrest.CoreMatchers.allOf
-import pl.dybczak.githubusers.utils.noViewMatcher
+import pl.dybczak.githubusers.utils.ViewMatchers
 import pl.sulej.users.R
 
-class SearchPageRobot {
+class UsersPageRobot {
 
-    fun assertThatGitHubUsersPageDisplayed(username: String, usernameNoView: String, userRepos: String) {
-        assertAppNameDisplayed()
-        assertUsernameDisplayed(username)
-        assertUserReposDisplayed(userRepos)
-        searchForUser(username)
-        assertThatSearchForUserWorks(usernameNoView)
-
-    }
-
-    private fun searchForUser(username: String) {
+    fun searchFor(username: String) {
         onView(withId(userSearchId)).perform(typeText(username))
     }
 
-    private fun assertUsernameDisplayed(username: String) {
+    fun assertUserDisplayed(username: String) {
         val username = allOf(withId(username_id), withText(username))
 
         onView(username).check(matches(isDisplayed()))
     }
 
-    private fun assertAppNameDisplayed() {
+    fun assertAppNameDisplayed() {
         onView(withText(APP_NAME_TEXT)).check(matches(isDisplayed()))
     }
 
-    private fun assertThatSearchForUserWorks(username: String) {
-        noViewMatcher.noView(allOf(withId(username_id), withText(username)))
+    fun assertUserNotDisplayed(username: String) {
+        ViewMatchers.noView(allOf(withId(username_id), withText(username)))
     }
 
-    private fun assertUserReposDisplayed(userRepos: String) {
+    fun assertUserReposDisplayed(userRepos: String) {
         val userRepos = allOf(withId(userRepoId), withText(userRepos))
 
         onView(userRepos).check(matches(isDisplayed()))
