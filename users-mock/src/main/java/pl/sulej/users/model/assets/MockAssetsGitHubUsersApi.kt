@@ -6,6 +6,8 @@ import pl.sulej.users.model.network.GitHubUsersApi
 import pl.sulej.users.model.network.RepositoryDto
 import pl.sulej.users.model.network.UserDto
 import pl.sulej.utilities.asynchronicity.asSingle
+import retrofit2.Response
+import retrofit2.adapter.rxjava2.Result
 import javax.inject.Inject
 
 class MockAssetsGitHubUsersApi @Inject constructor(
@@ -18,7 +20,7 @@ class MockAssetsGitHubUsersApi @Inject constructor(
             path = "users",
             type = classType
         )
-        return Result.success(response).asSingle()
+        return Result.response(Response.success(response)).asSingle()
     }
 
     override fun getUserRepositories(userLogin: String): Single<List<RepositoryDto>> {

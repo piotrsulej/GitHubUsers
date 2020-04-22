@@ -18,6 +18,8 @@ import pl.sulej.utilities.TWICE
 import pl.sulej.utilities.asynchronicity.TestSchedulerProvider
 import pl.sulej.utilities.asynchronicity.asObservable
 import pl.sulej.utilities.asynchronicity.asSingle
+import retrofit2.Response
+import retrofit2.adapter.rxjava2.Result
 
 class UsersRepositoryTest {
 
@@ -108,7 +110,7 @@ class UsersRepositoryTest {
 
     @Test
     fun `Ignore network error`() {
-        given(network.getUsers()).willReturn(Single.just(Result.failure(DUMMY_ERROR)))
+        given(network.getUsers()).willReturn(Single.just(Result.error(DUMMY_ERROR)))
         given(database.getUsers()).willReturn(listOf(DUMMY_ENTITY).asObservable())
 
         val result = testSubject.getUsers().test()
@@ -124,7 +126,7 @@ class UsersRepositoryTest {
 
         val result = testSubject.getUsers().test()
 
-        networkSingle.onSuccess(Result.failure(DUMMY_ERROR))
+        networkSingle.onSuccess(Result.error(DUMMY_ERROR))
 
         result.assertValue(UserList(error = DUMMY_ERROR))
     }
@@ -135,7 +137,7 @@ class UsersRepositoryTest {
                 login = "Diego",
                 avatarUrl = "https://gamepedia.cursecdn.com/gothic_pl_gamepedia/f/fa/Diego_%28G2%2C_cie%C5%84%29.png"
             )
-        private val DUMMY_USERS_FROM_NETWORK = Result.success(listOf(DUMMY_USER))
+        private val DUMMY_USERS_FROM_NETWORK = Result.response(Response.success(listOf(DUMMY_USER)))
         private val EXPECTED_REPOSITORIES = listOf(
             "Stary Obóz",
             "Miecz bojowy",

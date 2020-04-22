@@ -1,6 +1,7 @@
 package pl.sulej.users.model.network
 
 import io.reactivex.Single
+import retrofit2.adapter.rxjava2.Result
 import retrofit2.http.GET
 import retrofit2.http.Path
 

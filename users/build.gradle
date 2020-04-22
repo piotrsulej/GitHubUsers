@@ -35,9 +35,9 @@ android {
 dependencies {
     implementation kotlinStandardLibrary
 
-    implementation retrofit
-    implementation rxjava
-    implementation room
+    api retrofit
+    api rxjava
+    api room
     kapt roomCompiler
 
     implementation androidx.appCompat

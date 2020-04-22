@@ -100,6 +100,15 @@ class UsersPresenterTest {
     }
 
     @Test
+    fun `Don't show users showing error`() {
+        given(model.getUsers()).willReturn(UserList(error = DUMMY_ERROR).asObservable())
+
+        testSubject.viewAvailable()
+
+        then(view).should(never()).showUsers(any())
+    }
+
+    @Test
     fun `Show users after clicking error`() {
         given(model.getUsers()).willReturn(DUMMY_MODEL_USERS.asObservable())
 

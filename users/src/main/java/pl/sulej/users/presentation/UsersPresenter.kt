@@ -58,7 +58,10 @@ class UsersPresenter @Inject constructor(
     }
 
     private fun handleUsersList(usersList: UserList) {
-        usersList.error?.let(this::showError)
+        usersList.error?.let { error ->
+            showError(error)
+            return
+        }
 
         val filteredUserList = FilteredUserList(usersList.users, searchQuery)
         val convertedUsers = converter.convert(filteredUserList)

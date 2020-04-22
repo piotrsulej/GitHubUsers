@@ -9,6 +9,7 @@ import pl.sulej.users.model.network.RepositoryDto
 import pl.sulej.users.model.network.UserDto
 import pl.sulej.utilities.asynchronicity.SchedulerProvider
 import pl.sulej.utilities.asynchronicity.fireAndForget
+import retrofit2.adapter.rxjava2.Result
 import javax.inject.Inject
 
 class UsersRepository @Inject constructor(
@@ -60,14 +61,14 @@ class UsersRepository @Inject constructor(
     }
 
     private fun returnError(usersResponse: Result<List<UserDto>>) {
-        usersResponse.exceptionOrNull()?.let { throwable ->
+        usersResponse.error()?.let { throwable ->
             val listWithError = UserList(error = throwable)
             networkRequest.onNext(listWithError)
         }
     }
 
     private fun cacheUsers(usersResponse: Result<List<UserDto>>) {
-        val downloadedUsers = usersResponse.getOrNull().orEmpty()
+        val downloadedUsers = usersResponse.response()?.body().orEmpty()
         downloadedUsers.forEach { userDto ->
             val entity = UserEntity(
                 userDto.login,
