@@ -4,6 +4,7 @@
     <string name="user_no_repositories">This user has no repositories.</string>
     <string name="user_no_data_about_repositories">User repositories not downloaded.</string>
     <string name="users_error">Could not retrieve list of users. Tap to retry.</string>
+    <string name="users_search_hint">Search for user or repository</string>
     <string name="show_error_details">Tap here to show error details.</string>
     <string name="unknown_error">Unknown error.</string>
 </resources>
