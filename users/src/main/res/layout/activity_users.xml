@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="pl.sulej.users.view.UsersActivity">
 
-    <androidx.appcompat.widget.SearchView
+    <SearchView
         android:id="@+id/users_search"
         android:layout_width="match_parent"
         android:layout_height="50dp"

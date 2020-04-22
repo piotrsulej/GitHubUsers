@@ -2,9 +2,9 @@ package pl.sulej.users.view
 
 import android.os.Bundle
 import android.view.View
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_users.*
