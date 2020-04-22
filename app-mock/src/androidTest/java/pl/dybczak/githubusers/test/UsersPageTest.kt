@@ -17,7 +17,7 @@ class UsersPageTest {
     val activityRule = ActivityTestRule(UsersActivity::class.java)
 
     @Test
-    fun assertAppNameDisplayed() {
+    fun displayAppName() {
         searchPageRobot.assertAppNameDisplayed()
     }
 
@@ -29,8 +29,8 @@ class UsersPageTest {
 
     @Test
     fun displayRepositories() {
-        searchPageRobot.assertUserReposDisplayed(userRepos = "zemsta-gorna, zbroja-najemnika, new-camp")
-        searchPageRobot.assertUserReposDisplayed(userRepos = "old-camp, miecz-bojowy, diegos_bogen")
+        searchPageRobot.assertUserRepositoriesDisplayed(userRepos = "zemsta-gorna, zbroja-najemnika, new-camp")
+        searchPageRobot.assertUserRepositoriesDisplayed(userRepos = "old-camp, miecz-bojowy, diegos_bogen")
     }
 
     @Test

@@ -11,11 +11,11 @@ import pl.sulej.users.R
 class UsersPageRobot {
 
     fun searchFor(username: String) {
-        onView(withId(userSearchId)).perform(typeText(username))
+        onView(withId(USER_SEARCH_ID)).perform(typeText(username))
     }
 
     fun assertUserDisplayed(username: String) {
-        val username = allOf(withId(username_id), withText(username))
+        val username = allOf(withId(USERNAME_ID), withText(username))
 
         onView(username).check(matches(isDisplayed()))
     }
@@ -25,19 +25,19 @@ class UsersPageRobot {
     }
 
     fun assertUserNotDisplayed(username: String) {
-        ViewMatchers.noView(allOf(withId(username_id), withText(username)))
+        ViewMatchers.noView(allOf(withId(USERNAME_ID), withText(username)))
     }
 
-    fun assertUserReposDisplayed(userRepos: String) {
-        val userRepos = allOf(withId(userRepoId), withText(userRepos))
+    fun assertUserRepositoriesDisplayed(userRepos: String) {
+        val userRepos = allOf(withId(USER_REPOSITORIES_ID), withText(userRepos))
 
         onView(userRepos).check(matches(isDisplayed()))
     }
 
     companion object {
-        private val username_id = R.id.user_name
-        private val userSearchId = R.id.users_search
-        private val userRepoId = R.id.user_repositories
+        private val USERNAME_ID = R.id.user_name
+        private val USER_SEARCH_ID = R.id.users_search
+        private val USER_REPOSITORIES_ID = R.id.user_repositories
         private const val APP_NAME_TEXT = "GitHub Users (Mock)"
     }
 }
