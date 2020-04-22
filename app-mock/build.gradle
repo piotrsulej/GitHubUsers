@@ -36,8 +36,6 @@ dependencies {
     implementation project(":users")
     implementation project(":users-mock")
 
-    implementation androidx.appCompat
-
     implementation daggerAndroid
     kapt daggerAndroidProcessor
     kapt daggerCompiler
