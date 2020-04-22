@@ -1,8 +1,8 @@
 package pl.sulej.users.view
 
 import android.os.Bundle
+import android.text.Editable
 import android.view.View
-import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +12,7 @@ import pl.sulej.users.R
 import pl.sulej.users.UsersContract
 import pl.sulej.users.view.user.User
 import pl.sulej.utilities.adapter.BaseAdapter
+import pl.sulej.utilities.view.TextChangedListener
 import javax.inject.Inject
 
 class UsersActivity : AppCompatActivity(), UsersContract.View {
@@ -83,16 +84,9 @@ class UsersActivity : AppCompatActivity(), UsersContract.View {
     }
 
     private fun initializeSearchBar() {
-        users_search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                presenter.searchQueryUpdated(newText)
-                return true
-            }
-
-            override fun onQueryTextSubmit(query: String): Boolean {
-                presenter.searchQueryUpdated(query)
-                return true
+        users_search.addTextChangedListener(object : TextChangedListener() {
+            override fun afterTextChanged(editable: Editable?) {
+                presenter.searchQueryUpdated(editable.toString())
             }
         })
     }
