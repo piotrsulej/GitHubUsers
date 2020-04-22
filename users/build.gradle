@@ -40,7 +40,7 @@ dependencies {
     api room
     kapt roomCompiler
 
-    implementation androidx.appCompat
+    api androidx.appCompat
     implementation androidx.constraint
     implementation adapterDelegates
     implementation glide

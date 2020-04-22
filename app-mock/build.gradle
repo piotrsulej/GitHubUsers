@@ -36,12 +36,7 @@ dependencies {
     implementation project(":users")
     implementation project(":users-mock")
 
-    implementation retrofit
-    implementation rxjava
-    implementation room
-
     implementation androidx.appCompat
-    implementation adapterDelegates
 
     implementation daggerAndroid
     kapt daggerAndroidProcessor

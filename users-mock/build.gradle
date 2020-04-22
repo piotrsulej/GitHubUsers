@@ -38,8 +38,6 @@ dependencies {
     implementation project(":users")
 
     implementation gson
-//    implementation rxjava
-//    implementation room
     kapt roomCompiler
 
     implementation daggerAndroid
