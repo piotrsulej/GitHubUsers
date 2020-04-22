@@ -9,28 +9,30 @@ import pl.sulej.users.model.network.RepositoryDto
 import pl.sulej.users.model.network.UserDto
 import pl.sulej.utilities.asynchronicity.SchedulerProvider
 import pl.sulej.utilities.asynchronicity.fireAndForget
-import pl.sulej.utilities.log.Logger
+import retrofit2.adapter.rxjava2.Result
 import javax.inject.Inject
 
 class UsersRepository @Inject constructor(
     private val network: GitHubUsersApi,
     private val database: UsersDao,
-    private val schedulerProvider: SchedulerProvider,
-    private val logger: Logger
+    private val schedulerProvider: SchedulerProvider
 ) : UsersModel {
 
     private val detailRequestsInProgress = mutableListOf<String>()
-    private lateinit var databaseDownloadProgress: PublishSubject<List<UserEntity>>
+    private var networkRequest = PublishSubject.create<UserList>()
+    private var listRequestInProgress = false
 
-    override fun getUsers(): Observable<List<UserDetails>> {
-        databaseDownloadProgress = PublishSubject.create()
-        return database.getUsers().mergeWith(databaseDownloadProgress).map { users ->
-            if (users.isEmpty()) {
-                downloadUsers()
+    override fun getUsers(): Observable<UserList> = getDatabaseUsers().mergeWith(networkRequest)
+
+    private fun getDatabaseUsers() =
+        database.getUsers()
+            .doOnNext { users ->
+                if (users.isEmpty() && listRequestInProgress.not()) {
+                    downloadUsers()
+                }
             }
-            users.map(this::getUserDetails)
-        }
-    }
+            .filter { users -> users.isNotEmpty() }
+            .map { users -> UserList(users = users.map(this::getUserDetails)) }
 
     private fun getUserDetails(user: UserEntity): UserDetails =
         UserDetails(
@@ -49,16 +51,24 @@ class UsersRepository @Inject constructor(
         }
 
     private fun downloadUsers() {
-        logger.debugLog(LOGGER_TAG, "Getting list of users from network.")
+        listRequestInProgress = true
         network
             .getUsers()
-            .doOnError(databaseDownloadProgress::onError)
+            .doOnEvent { _, _ -> listRequestInProgress = false }
             .doOnSuccess(this::cacheUsers)
+            .doOnSuccess(this::returnError)
             .fireAndForget(schedulerProvider.subscriptionScheduler())
     }
 
-    private fun cacheUsers(downloadedUsers: List<UserDto>) {
-        logger.debugLog(LOGGER_TAG, "Saving ${downloadedUsers.size} users to database.")
+    private fun returnError(usersResponse: Result<List<UserDto>>) {
+        usersResponse.error()?.let { throwable ->
+            val listWithError = UserList(error = throwable)
+            networkRequest.onNext(listWithError)
+        }
+    }
+
+    private fun cacheUsers(usersResponse: Result<List<UserDto>>) {
+        val downloadedUsers = usersResponse.response()?.body().orEmpty()
         downloadedUsers.forEach { userDto ->
             val entity = UserEntity(
                 userDto.login,
@@ -70,8 +80,6 @@ class UsersRepository @Inject constructor(
     }
 
     private fun downloadUserDetails(login: String, avatarUrl: String) {
-        logger.debugLog(LOGGER_TAG, "Getting $login's details from network.")
-        logger.debugLog(LOGGER_TAG, "${detailRequestsInProgress.size} detail requests in progress.")
         network.getUserRepositories(login)
             .doOnEvent { _, _ -> detailRequestsInProgress.remove(login) }
             .doOnSuccess { repositories ->
@@ -89,7 +97,6 @@ class UsersRepository @Inject constructor(
         )
 
     private fun cacheUserDetails(userDetails: UserDetails) {
-        logger.debugLog(LOGGER_TAG, "Saving ${userDetails.login}'s details to database.")
         val entity = UserEntity(
             userDetails.login,
             userDetails.avatarUrl,
@@ -99,7 +106,6 @@ class UsersRepository @Inject constructor(
     }
 
     companion object {
-        private const val LOGGER_TAG = "UserRepository"
         private const val REPOSITORY_NAMES_COUNT = 3
     }
 }

@@ -6,18 +6,21 @@ import pl.sulej.users.model.network.GitHubUsersApi
 import pl.sulej.users.model.network.RepositoryDto
 import pl.sulej.users.model.network.UserDto
 import pl.sulej.utilities.asynchronicity.asSingle
+import retrofit2.Response
+import retrofit2.adapter.rxjava2.Result
 import javax.inject.Inject
 
 class MockAssetsGitHubUsersApi @Inject constructor(
     private val assetsObjectsLoader: AssetsObjectsLoader
 ) : GitHubUsersApi {
 
-    override fun getUsers(): Single<List<UserDto>> {
+    override fun getUsers(): Single<Result<List<UserDto>>> {
         val classType = object : TypeToken<List<UserDto>>() {}.type
-        return assetsObjectsLoader.read<List<UserDto>>(
+        val response = assetsObjectsLoader.read<List<UserDto>>(
             path = "users",
             type = classType
-        ).asSingle() ?: Single.error(IllegalStateException("Could not find mock users list."))
+        )
+        return Result.response(Response.success(response)).asSingle()
     }
 
     override fun getUserRepositories(userLogin: String): Single<List<RepositoryDto>> {
@@ -25,6 +28,6 @@ class MockAssetsGitHubUsersApi @Inject constructor(
         return assetsObjectsLoader.read<List<RepositoryDto>>(
             path = "users/$userLogin/repos",
             type = classType
-        ).asSingle() ?: Single.just(emptyList())
+        ).asSingle()
     }
 }

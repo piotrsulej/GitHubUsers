@@ -4,5 +4,5 @@ import io.reactivex.Observable
 
 interface UsersModel {
 
-    fun getUsers(): Observable<List<UserDetails>>
+    fun getUsers(): Observable<UserList>
 }

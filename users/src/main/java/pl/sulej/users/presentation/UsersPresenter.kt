@@ -2,8 +2,8 @@ package pl.sulej.users.presentation
 
 import pl.sulej.users.R
 import pl.sulej.users.UsersContract
+import pl.sulej.users.model.UserList
 import pl.sulej.users.model.UsersModel
-import pl.sulej.users.model.UserDetails
 import pl.sulej.users.view.user.User
 import pl.sulej.utilities.asynchronicity.SubscriptionsManager
 import pl.sulej.utilities.design.Converter
@@ -39,11 +39,13 @@ class UsersPresenter @Inject constructor(
             tag = this.toString(),
             source = model.getUsers(),
             onNext = this::handleUsersList,
-            onError = { error ->
-                val message = error.message ?: stringProvider.getString(R.string.unknown_error)
-                view?.showError(message)
-            }
+            onError = this::showError
         )
+    }
+
+    private fun showError(error: Throwable) {
+        val message = error.message ?: stringProvider.getString(R.string.unknown_error)
+        view?.showError(message)
     }
 
     override fun searchQueryUpdated(searchQuery: String) {
@@ -55,13 +57,14 @@ class UsersPresenter @Inject constructor(
         subscriptionsManager.unsubscribe(tag = this.toString())
     }
 
-    private fun handleUsersList(users: List<UserDetails>) {
-        if (users.isEmpty()) {
-            view?.showLoadingIndicator()
-        } else {
-            val userList = FilteredUserList(users, searchQuery)
-            val convertedUsers = converter.convert(userList)
-            view?.showUsers(convertedUsers)
+    private fun handleUsersList(usersList: UserList) {
+        usersList.error?.let { error ->
+            showError(error)
+            return
         }
+
+        val filteredUserList = FilteredUserList(usersList.users, searchQuery)
+        val convertedUsers = converter.convert(filteredUserList)
+        view?.showUsers(convertedUsers)
     }
 }

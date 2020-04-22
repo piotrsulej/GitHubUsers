@@ -14,7 +14,6 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
@@ -36,12 +35,12 @@ android {
 dependencies {
     implementation kotlinStandardLibrary
 
-    implementation retrofit
-    implementation rxjava
-    implementation room
+    api retrofit
+    api rxjava
+    api room
     kapt roomCompiler
 
-    implementation androidx.appCompat
+    api androidx.appCompat
     implementation androidx.constraint
     implementation adapterDelegates
     implementation glide

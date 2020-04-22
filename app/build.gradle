@@ -39,13 +39,6 @@ dependencies {
 
     implementation project(":users")
 
-    implementation retrofit
-    implementation rxjava
-    implementation room
-
-    implementation androidx.appCompat
-    implementation adapterDelegates
-
     implementation daggerAndroid
     kapt daggerAndroidProcessor
     kapt daggerCompiler
