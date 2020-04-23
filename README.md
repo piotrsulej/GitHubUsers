@@ -3,7 +3,7 @@
 Example Android application. Application code developed by [@piotrsulej](https://github.com/piotrsulej), automated interface tests developed by [@BartoszDybczak](https://github.com/BartoszDybczak).
 
 <p align=center>
-<img src="https://github.com/piotrsulej/GitHubUsers/blob/master/right-to-left.png" height="300" /><img src="https://github.com/piotrsulej/GitHubUsers/blob/master/filtering.png" height="300" /><img src="https://github.com/piotrsulej/GitHubUsers/blob/master/error-handling.png" height="200" />
+<img src="right-to-left.png" height="300" /><img src="filtering.png" height="300" /><img src="error-handling.png" height="200" />
 </p>
 
 ## Features
@@ -41,3 +41,12 @@ Example Android application. Application code developed by [@piotrsulej](https:/
 * https://developer.android.com/jetpack/androidx/releases/appcompat
 * https://developer.android.com/jetpack/androidx/releases/constraintlayout
 * https://github.com/sockeqwe/AdapterDelegates
+
+## Build and test
+
+Here you can find list of useful commands to build and test the application:
+* `./gradlew build` - assemble all modules and run unit tests for them.
+* `./gradlew connectedAndroidTest` - run Android tests for mock application.
+* `./gradlew installDebug` - install production and mock applications
+* `./gradlew app:installDebug` - install production application
+* `./gradlew app-mock:installDebug` - install mock application
