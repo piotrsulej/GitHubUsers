@@ -48,6 +48,7 @@ class UsersActivity : AppCompatActivity(), UsersContract.View {
         adapter.items = users
         hideEverything()
         users_list.visibility = View.VISIBLE
+        users_search.visibility = View.VISIBLE
     }
 
     override fun showLoadingIndicator() {
@@ -69,6 +70,7 @@ class UsersActivity : AppCompatActivity(), UsersContract.View {
         error_message.visibility = View.GONE
         error_details.visibility = View.GONE
         users_list.visibility = View.GONE
+        users_search.visibility = View.GONE
     }
 
     private fun initializeUsersList() {
