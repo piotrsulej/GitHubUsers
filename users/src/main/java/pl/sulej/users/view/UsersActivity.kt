@@ -46,29 +46,28 @@ class UsersActivity : AppCompatActivity(), UsersContract.View {
 
     override fun showUsers(users: List<User>) {
         adapter.items = users
-        hideEverything()
         users_list.visibility = View.VISIBLE
         users_search.visibility = View.VISIBLE
+        loading_indicator.visibility = View.GONE
+        error_message.visibility = View.GONE
+        error_details.visibility = View.GONE
     }
 
     override fun showLoadingIndicator() {
-        hideEverything()
         loading_indicator.visibility = View.VISIBLE
+        users_list.visibility = View.GONE
+        users_search.visibility = View.GONE
+        error_message.visibility = View.GONE
+        error_details.visibility = View.GONE
     }
 
     override fun showError(errorMessage: String) {
-        hideEverything()
         error_message.visibility = View.VISIBLE
         error_details.visibility = View.VISIBLE
         error_details.setOnClickListener {
             Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
         }
-    }
-
-    private fun hideEverything() {
         loading_indicator.visibility = View.GONE
-        error_message.visibility = View.GONE
-        error_details.visibility = View.GONE
         users_list.visibility = View.GONE
         users_search.visibility = View.GONE
     }

@@ -11,7 +11,7 @@ import pl.sulej.users.R
 class UsersPageRobot {
 
     fun searchFor(searchQuery: String) {
-        onView(withId(USER_SEARCH_ID)).perform(click(), replaceText(searchQuery), closeSoftKeyboard())
+        onView(withId(USER_SEARCH_ID)).perform(typeText(searchQuery))
     }
 
     fun assertUserDisplayed(username: String) {
