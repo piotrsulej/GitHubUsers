@@ -1,7 +1,9 @@
 # GitHub Users
 
+## Project overview
 Example Android application. Application code developed by [@piotrsulej](https://github.com/piotrsulej), automated interface tests developed by [@BartoszDybczak](https://github.com/BartoszDybczak).
 
+## Example screenshots
 <p align=center>
 <img src="users.png" height="300" /><img src="search.png" height="300" /><img src="error.png" height="300" /><img src="mock.png" height="300" />
 </p>
