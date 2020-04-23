@@ -11,39 +11,39 @@ import pl.sulej.users.view.UsersActivity
 @RunWith(AndroidJUnit4::class)
 class UsersPageTest {
 
-    private val searchPageRobot = UsersPageRobot()
+    private val searchPage = UsersPageRobot()
 
     @get:Rule
     val activityRule = ActivityTestRule(UsersActivity::class.java)
 
     @Test
     fun displayAppName() {
-        searchPageRobot.assertAppNameDisplayed()
+        searchPage.assertAppNameDisplayed()
     }
 
     @Test
     fun displayUserLogins() {
-        searchPageRobot.assertUserDisplayed(username = "Gorn")
-        searchPageRobot.assertUserDisplayed(username = "Diego")
+        searchPage.assertUserDisplayed(username = "Gorn")
+        searchPage.assertUserDisplayed(username = "Diego")
     }
 
     @Test
     fun displayRepositories() {
-        searchPageRobot.assertUserRepositoriesDisplayed(userRepos = "zemsta-gorna, zbroja-najemnika, new-camp")
-        searchPageRobot.assertUserRepositoriesDisplayed(userRepos = "old-camp, miecz-bojowy, diegos_bogen")
+        searchPage.assertUserRepositoriesDisplayed(repositories = "zemsta-gorna, zbroja-najemnika, new-camp")
+        searchPage.assertUserRepositoriesDisplayed(repositories = "old-camp, miecz-bojowy, diegos_bogen")
     }
 
     @Test
     fun filterByLogin() {
-        searchPageRobot.searchFor(username = "Gorn")
-        searchPageRobot.assertUserDisplayed(username = "Gorn")
-        searchPageRobot.assertUserNotDisplayed(username = "Diego")
+        searchPage.searchFor("Gorn")
+        searchPage.assertUserDisplayed(username = "Gorn")
+        searchPage.assertUserNotDisplayed(username = "Diego")
     }
 
     @Test
     fun filterByRepo() {
-        searchPageRobot.searchFor("old-camp")
-        searchPageRobot.assertUserDisplayed("Diego")
-        searchPageRobot.assertUserNotDisplayed("Gorn")
+        searchPage.searchFor("old-camp")
+        searchPage.assertUserDisplayed("Diego")
+        searchPage.assertUserNotDisplayed("Gorn")
     }
 }

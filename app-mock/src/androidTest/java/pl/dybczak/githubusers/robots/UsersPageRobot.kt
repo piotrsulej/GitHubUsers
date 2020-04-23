@@ -1,7 +1,7 @@
 package pl.dybczak.githubusers.robots
 
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.typeText
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import org.hamcrest.CoreMatchers.allOf
@@ -10,14 +10,14 @@ import pl.sulej.users.R
 
 class UsersPageRobot {
 
-    fun searchFor(username: String) {
-        onView(withId(USER_SEARCH_ID)).perform(typeText(username))
+    fun searchFor(searchQuery: String) {
+        onView(withId(USER_SEARCH_ID)).perform(click(), replaceText(searchQuery), closeSoftKeyboard())
     }
 
     fun assertUserDisplayed(username: String) {
-        val username = allOf(withId(USERNAME_ID), withText(username))
+        val usernameView = allOf(withId(USERNAME_ID), withText(username))
 
-        onView(username).check(matches(isDisplayed()))
+        onView(usernameView).check(matches(isDisplayed()))
     }
 
     fun assertAppNameDisplayed() {
@@ -28,10 +28,10 @@ class UsersPageRobot {
         ViewMatchers.noView(allOf(withId(USERNAME_ID), withText(username)))
     }
 
-    fun assertUserRepositoriesDisplayed(userRepos: String) {
-        val userRepos = allOf(withId(USER_REPOSITORIES_ID), withText(userRepos))
+    fun assertUserRepositoriesDisplayed(repositories: String) {
+        val repositoriesView = allOf(withId(USER_REPOSITORIES_ID), withText(repositories))
 
-        onView(userRepos).check(matches(isDisplayed()))
+        onView(repositoriesView).check(matches(isDisplayed()))
     }
 
     companion object {
