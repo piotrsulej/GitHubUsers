@@ -12,11 +12,12 @@ Example Android application. Application code developed by [@piotrsulej](https:/
 * You can filter the list by typing part of user's login
 * You can filter the list by typing part of user's repository name
 
-## Modules
+## Project structure
 * **users** - contains all the code related to users list.
 * **users-mock** - contains all the code needed for for automated user interface testing of users list. It contains dependency configuration for users lists with model layer depending on static mock data from JSON assets instead of network call.
 * **app** - dependency configuration for production application.
-* **app-mock** - having users and users-mock as a separate modules gives the possibility to reuse it in more applications, e.g. with different implementation of model, view or presentation layer. This mock version used for automated tests is an example of how this approach could be implemented. It uses users-mock module and dependency configuration that is provided there to make automated interface tests independent from GitHub API.
+* **app-mock** - having *users* and *users-mock* as a separate modules gives the possibility to reuse it in more applications, e.g. with different implementation of model, view or presentation layer. This mock version used for automated tests is an example of how this approach could be implemented. It uses *users-mock* module and dependency configuration that is provided there to make automated interface tests independent from GitHub API.
+* **app-res** - directory used by both *app* and *app-mock* to store shared resources.
 
 ## Overview of dependencies
 ### Dependency injection
