@@ -52,3 +52,8 @@ Here you can find list of useful commands to build and test the application:
 * `./gradlew installDebug` - install production and mock applications
 * `./gradlew app:installDebug` - install production application
 * `./gradlew app-mock:installDebug` - install mock application
+
+So far automated tests were run on following devices:
+- Nexus One (Android 5.1) emulator
+- Lenovo K53a48 (Android 7.0) physical device
+- Xiaomi Mi 9T (Android 9.0) physical device
