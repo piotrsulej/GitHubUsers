@@ -3,16 +3,15 @@ package pl.sulej.githubusers.dependency
 import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
-import dagger.android.AndroidInjectionModule
 import pl.sulej.githubusers.GitHubUsersApplication
 import pl.sulej.users.dependency.UsersModule
+import pl.sulej.utilities.dependency.AndroidModule
 import pl.sulej.utilities.dependency.AsynchronicityModule
 import javax.inject.Singleton
 
 @Singleton
 @Component(
     modules = [
-        AndroidInjectionModule::class,
         UsersModule::class,
         AsynchronicityModule::class,
         AndroidModule::class

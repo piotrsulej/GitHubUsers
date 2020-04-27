@@ -1,18 +1,16 @@
-package pl.sulej.githubusers.dependency
+package pl.sulej.users.dependency
 
 import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
-import dagger.android.AndroidInjectionModule
-import pl.sulej.githubusers.MockGitHubUsersApplication
-import pl.sulej.users.dependency.MockUsersModule
+import pl.sulej.users.MockUsersApplication
+import pl.sulej.utilities.dependency.AndroidModule
 import pl.sulej.utilities.dependency.AsynchronicityModule
 import javax.inject.Singleton
 
 @Singleton
 @Component(
     modules = [
-        AndroidInjectionModule::class,
         MockUsersModule::class,
         AsynchronicityModule::class,
         AndroidModule::class
@@ -20,7 +18,7 @@ import javax.inject.Singleton
 )
 interface MockApplicationComponent {
 
-    fun inject(application: MockGitHubUsersApplication)
+    fun inject(application: MockUsersApplication)
 
     @Component.Builder
     interface Builder {
