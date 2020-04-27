@@ -1,5 +1,4 @@
 include ':users'
 include ':users-mock'
 include ':app'
-include ':app-mock'
 rootProject.name = "GitHub Users"

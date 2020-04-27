@@ -15,11 +15,10 @@ Example Android application. Application code developed by [@piotrsulej](https:/
 * You can filter the list by typing part of user's repository name
 
 ## Project structure
-* **users** - contains all the code related to users list.
-* **users-mock** - contains all the code needed for for automated user interface testing of users list. It contains dependency configuration for users lists with model layer depending on static mock data from JSON assets instead of network call.
-* **app** - dependency configuration for production application.
-* **app-mock** - having *users* and *users-mock* as a separate modules gives the possibility to reuse it in more applications, e.g. with different implementation of model, view or presentation layer. This mock version used for automated tests is an example of how this approach could be implemented. It uses *users-mock* module and dependency configuration that is provided there to make automated interface tests independent from GitHub API.
-* **app-res** - directory used by both *app* and *app-mock* to store shared resources.
+* **users** - contains all the code related to users list feature.
+* **users-mock** - contains automated user interface tests of users list and dependency configuration for users lists with model layer depending on static mock data from JSON assets instead of network call. This allows to test users-feature interface in isolation from the application. With this approach features can be reused by different applications and they don't need to be tested multiple times.  
+* **app** - dependency configuration of application.
+* **app-res** - directory used by both *app* and *users-mock* to store shared resources (icon, theme).
 
 ## Overview of dependencies
 ### Dependency injection
@@ -48,10 +47,10 @@ Example Android application. Application code developed by [@piotrsulej](https:/
 
 Here you can find list of useful commands to build and test the application:
 * `./gradlew build` - assemble all modules and run unit tests for them.
-* `./gradlew connectedAndroidTest` - run Android tests for mock application.
-* `./gradlew installDebug` - install production and mock applications
-* `./gradlew app:installDebug` - install production application
-* `./gradlew app-mock:installDebug` - install mock application
+* `./gradlew connectedAndroidTest` - run Android tests on mock data.
+* `./gradlew installDebug` - install all of the applications listed below.
+* `./gradlew app:installDebug` - install application.
+* `./gradlew users-mock:installDebug` - install application with mock version of users feature - for testing purpose.
 
 So far automated tests were run on following devices:
 - Nexus One (Android 5.1) emulator

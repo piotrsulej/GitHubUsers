@@ -1,4 +1,4 @@
-package pl.sulej.githubusers.dependency
+package pl.sulej.utilities.dependency
 
 import android.app.Application
 import android.content.Context

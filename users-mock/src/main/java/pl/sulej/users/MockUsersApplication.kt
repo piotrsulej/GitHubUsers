@@ -1,16 +1,16 @@
-package pl.sulej.githubusers
+package pl.sulej.users
 
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import dagger.android.DispatchingAndroidInjector
-import pl.sulej.githubusers.dependency.MockApplicationComponent
-import pl.sulej.githubusers.dependency.DaggerMockApplicationComponent
+import pl.sulej.users.dependency.MockApplicationComponent
+import pl.sulej.users.dependency.DaggerMockApplicationComponent
 import javax.inject.Inject
 
-class MockGitHubUsersApplication : DaggerApplication() {
+class MockUsersApplication : DaggerApplication() {
 
     @Inject
-    lateinit var injector: DispatchingAndroidInjector<MockGitHubUsersApplication>
+    lateinit var injector: DispatchingAndroidInjector<MockUsersApplication>
 
     private lateinit var applicationComponent: MockApplicationComponent
 
