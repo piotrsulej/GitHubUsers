@@ -1,7 +1,7 @@
 # GitHub Users
 
 ## Project overview
-Example Android application. Application code developed by [@piotrsulej](https://github.com/piotrsulej), automated interface tests developed by [@BartoszDybczak](https://github.com/BartoszDybczak).
+Example Android application architecture - future plan is to create independent feature modules and mix some of those features in multiple applications without duplicating code related to neither implementation or tests. Application code developed by [@piotrsulej](https://github.com/piotrsulej), automated interface tests developed by [@BartoszDybczak](https://github.com/BartoszDybczak).
 
 ## Example screenshots
 <p align=center>
