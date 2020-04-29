@@ -1,11 +1,12 @@
 package pl.dybczak.githubusers.robots
 
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import org.hamcrest.CoreMatchers.allOf
 import pl.dybczak.githubusers.utils.ViewMatchers
+import pl.dybczak.githubusers.utils.waitForEspressoCondition
 import pl.sulej.users.R
 
 class UsersPageRobot {
@@ -25,7 +26,9 @@ class UsersPageRobot {
     }
 
     fun assertUserNotDisplayed(username: String) {
-        ViewMatchers.noView(allOf(withId(USERNAME_ID), withText(username)))
+        waitForEspressoCondition {
+            ViewMatchers.noView(allOf(withId(USERNAME_ID), withText(username)))
+        }
     }
 
     fun assertUserRepositoriesDisplayed(repositories: String) {

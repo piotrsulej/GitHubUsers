@@ -50,4 +50,6 @@ dependencies {
     kapt daggerAndroidProcessor
     
     androidTestImplementation espresso
+    androidTestImplementation 'com.azimolabs.conditionwatcher:conditionwatcher:0.2'
+
 }
