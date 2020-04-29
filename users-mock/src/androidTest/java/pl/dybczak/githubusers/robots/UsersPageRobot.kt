@@ -38,6 +38,6 @@ class UsersPageRobot {
         private val USERNAME_ID = R.id.user_name
         private val USER_SEARCH_ID = R.id.users_search
         private val USER_REPOSITORIES_ID = R.id.user_repositories
-        private const val APP_NAME_TEXT = "GitHub Users (Mock)"
+        private const val APP_NAME_TEXT = "Users Mock"
     }
 }
