@@ -9,7 +9,7 @@ android {
     compileSdkVersion 29
 
     defaultConfig {
-        minSdkVersion 17
+        minSdkVersion 18
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -48,10 +48,8 @@ dependencies {
     implementation daggerAndroid
     kapt daggerCompiler
     kapt daggerAndroidProcessor
-    
+
     androidTestImplementation espresso
     androidTestImplementation 'com.azimolabs.conditionwatcher:conditionwatcher:0.2'
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
-    androidTestImplementation 'com.linkedin.testbutler:test-butler-library:2.1.0'
-    androidTestUtil 'com.linkedin.testbutler:test-butler-app:2.1.0'
 }
