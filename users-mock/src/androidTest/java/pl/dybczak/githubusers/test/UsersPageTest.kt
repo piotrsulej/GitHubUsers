@@ -5,7 +5,7 @@ import pl.dybczak.githubusers.robots.UsersPageRobot
 import pl.dybczak.githubusers.utils.TestBase
 import pl.sulej.users.view.UsersActivity
 
-class UsersPageTest : TestBase.TestBase<UsersActivity>(UsersActivity::class.java) {
+class UsersPageTest : TestBase <UsersActivity>(UsersActivity::class.java) {
 
     private val searchPage = UsersPageRobot()
 
