@@ -1,20 +1,13 @@
 package pl.dybczak.githubusers.test
 
-import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
-import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 import pl.dybczak.githubusers.robots.UsersPageRobot
+import pl.dybczak.githubusers.utils.TestBase
 import pl.sulej.users.view.UsersActivity
 
-@RunWith(AndroidJUnit4::class)
-class UsersPageTest {
+class UsersPageTest : TestBase <UsersActivity>(UsersActivity::class.java) {
 
     private val searchPage = UsersPageRobot()
-
-    @get:Rule
-    val activityRule = ActivityTestRule(UsersActivity::class.java)
 
     @Test
     fun displayAppName() {
@@ -43,7 +36,7 @@ class UsersPageTest {
     @Test
     fun filterByRepo() {
         searchPage.searchFor("old-camp")
-        searchPage.assertUserDisplayed("Diego")
-        searchPage.assertUserNotDisplayed("Gorn")
+        searchPage.assertUserDisplayed(username = "Diego")
+        searchPage.assertUserNotDisplayed(username = "Gorn")
     }
 }
