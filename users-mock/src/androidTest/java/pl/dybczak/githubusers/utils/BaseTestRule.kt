@@ -6,7 +6,10 @@ import org.junit.rules.RuleChain
 
 object BaseTestRule {
 
-    fun <T : Activity> ruleChain(activityClass: Class<T>, outerRuleChain: RuleChain = RuleChain.emptyRuleChain()): RuleChain {
+    fun <T : Activity> ruleChain(
+        activityClass: Class<T>,
+        outerRuleChain: RuleChain = RuleChain.emptyRuleChain()
+    ): RuleChain {
 
         val activityRule = ActivityTestRule(activityClass)
 
